@@ -1,450 +1,643 @@
 // Lopez Michel Jose Alonso   Matricula: 370650
-// Fecha inicio: 04/10/2023   Fecha fin: 09/10/2023
-
-// En esta libreria llamada JoseLib.h usaremos las funciones del programa numero siete 
-// y aparte haremos un nuevas en base a las parecidas del programa numero 8. Todo con el fin de usar toda esta
-//libreria en el programa numero nueve, en fin de solo mandar a llamara toda esta libreria y ya solo mandar a
-// llamar a las funciones que hice aqui, igual como lo hariamos con librerias como stdio.h por ejemplo.
-
+// Fecha inicio: 11/10/2023   Fecha fin: 17/10/2023
+// En esta libreria por medio de los struct podemos hacer datos para hacer registros y en base a las funcione
+// poder usar los datos de las variables del struct, para en base a eso poder hacer registros para poder 
+// agregar,ordenar,imprimir,buscar y ordenar dichos datos en la ejecucion del programa.
 // JoseLib.h
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include <stdbool.h> //Son esta las librerias que usaremos en este archivo.h
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h> //Declaramos las librerias que usaremos en la libreria.
 
-#define M 15   //Aqui definimso una constante de 15 valores para que se llenen de manera aleatoria el vector, que
-                //en otra funcion servira para hacer matrices como la fila
-
-#define N 4   //Aqui declaramos otra constante de que servira en las matrices como las columnas que tendra la misma.
-
-
-//--------------------------------------------------------------------------------------------------------
-void mayusculas(char cadena[60]);
-void minusculas(char cadena[60]);
-void capital(char cadena[60]);
-int tamaño(char cadena[60]);
-void voltear(char cadena[60]);
-void noespacios(char cadena[60]);
-char permitir(char cadena[60]);
-void todas(char cadena[60]);
-void palindromo(char cadena[]);    //Todas las funciones antes hechas en el programa de la semana siete.
-//--------------------------------------------------------------------------------------------------------
-
-
-
-//--------------------------------------------------------------------------------------------------------
-int validar_numero(int ri, int rf);
-bool no_repetir(int vect[], int n);
-void llenar_vect_aleatorio(int vect[], int m, int ri, int rf);
-void llenar_matriz(int matriz[4][4], int m, int ri, int rf);
-void imprimir_mat(int matriz[4][4], int m, int n);
-void imprimir_vect(int vect[], int m);
-bool no_repetir_m(int matriz[4][4],int n);
-void ordenar(int vect[], int m);
-int busq_sec(int vect[], int n, int num);
-void buscar (int vect[], int m);        //Todas las funciones que usaremos en esta libreria para el programa.
-//--------------------------------------------------------------------------------------------------------
-
-
-
-//--------------------------------------------------------------------------------------------------------        
-// FUNCION DE MAYUSCULAS //
-void mayusculas(char cadena[60])
+//         ./semana10/LMJA_A10_01_432
+//************************************************************************************************************************
+typedef struct Tkey
 {
-    int i;
-    printf("\n");
-    for(i = 0; cadena[i] != '\0'; i++)
+    long matricula;
+    char nombre[31];
+    char apellido_paterno[31];
+    char apellido_materno[31];
+    int estatus;
+    int genero;
+    int edad;
+     
+}Tkey;      //Aqui declaramos las variables de la estructura de los datos que pondra en un futuro el usuario.
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int validaL(long ri, long rf,const char msg[],const char msgError[])
+{
+   //Son las condiciones para los valores de tipo caracter para validar que lo sean.
+
+    long num;
+    char xnum[30];  //Declaramos las variables y la cadena.
+
+    do
     {
-        if (cadena[i] >= 97)
+        puts(msg);    //Imprimimos el mensaje de opcion de los datos de los campos que usaremos en la estructura del programa.
+        fflush(stdin); //Limpiamos el buffer de la basura que se puede llegar a almacenar.
+        gets(xnum);     //Le pedimos al usuario que nos de el valor para la cadena.
+        num = atoi(xnum);  //convertimos el valor de la cadena xnum a un valor entero num.
+
+        if (num < ri || num > rf)  //Si el valor entero del numero es menor a ri o si es mayor a rf, imprimir el mensaje de error que dice que no se escogio una de las opciones predispuestas.
         {
-            if (cadena[i] <= 122)
-            {
-                cadena[i] = cadena[i] - 32;
-                printf("%c" ,cadena[i]);
-            }
+            printf("%s", msgError); //Imprimimos el mensaje de error.
+            printf("\n");
+        }
+    } while (num < ri || num > rf); //Y el programa seguira mientras numero sea menor a ri y mayor a rf.
+
+    return num; //Retornamos el valor numero ya que lo ocuparemos.
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int validaInt(int ri, int rf,const char msg[],const char msgError[])
+{
+    //Son las condiciones para los valores de tipo entero para validar que lo sean.
+
+    int num;
+    char xnum[30]; //Declaramos las variables y la cadena.
+
+    do
+    {
+        puts(msg);     //Imprimimos el mensaje de opcion de los datos de los campos que usaremos en la estructura del programa.
+        fflush(stdin);  //Limpiamos el buffer de la basura que se puede llegar a almacenar.
+        gets(xnum);      //Le pedimos al usuario que nos de el valor para la cadena.
+        num = atoi(xnum);  //convertimos el valor de la cadena xnum a un valor entero num.
+
+        if (num < ri || num > rf) //Si el valor entero del numero es menor a ri o si es mayor a rf, imprimir el mensaje de error que dice que no se escogio una de las opciones predispuestas.
+        {
+            printf("%s", msgError); //Imprimimos el mensaje de error.
+            printf("\n");
+        }
+    } while (num < ri || num > rf); //Y el programa seguira mientras numero sea menor a ri y mayor a rf.
+
+    return num; //Retornamos el valor numero ya que lo ocuparemos.
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int busqSec(Tkey *registros, int tam, long matricula)
+{
+  //Comienza desde el primer elemento de la lista, compara el elemento actual con el valor que estás buscando.Si el elemento 
+  //actual coincide con el valor que estás buscando, has encontrado el elemento y puedes detener la búsqueda.
+  // Si no coincide, pasa al siguiente elemento en la lista y compara el elemento actual con el valor que estás buscando.
+  // Si se ha revisado todos los elementos de la lista y no se encontro el valor, entonces el valor no está en la lista.
+
+    int i;
+    for (i = 0; i < tam; i++)  //Dictamos que i comienze en 0, siga mientras 0 sea menor que 100 y que vaya en uno en uno.
+    {
+        if(registros[i].matricula == matricula) //Buscamos que si los registros de la matricula son iguales a el campo llave de la matricula
+        {   
+            return i;   //retornara el valor que corresponde a i.
         }
     }
+
+    return -1;
 }
+//************************************************************************************************************************
 
-// FUNCION DE MINUSCULAS //
-void minusculas(char cadena[60])
+
+//************************************************************************************************************************
+void burbuja(Tkey vect[], int tam)
 {
-    int i;
-    printf("\n");
-    for(i = 0; cadena[i] != '\0'; i++)
-    {
-        if (cadena[i] >= 65)
-        {
-            if (cadena[i] <= 90)
-            {
-                cadena[i] = cadena[i] + 32;
-                printf("%c" ,cadena[i]);
-            }
-        }
-    }
-}
-
-// FUNCION QUE CONVIERTE CADENA EN "CAPITAL" //
-void capital(char cadena[60])
-{
-    int i;
-    printf("\n");
-    cadena[0] = 67;
-    cadena[1] = 65;
-    cadena[2] = 80;
-    cadena[3] = 73;
-    cadena[4] = 84;
-    cadena[5] = 65;
-    cadena[6] = 76;
-    cadena[7] = '\0';
-    for(i = 0; cadena[i] != '\0'; i++)
-    {
-        printf("%c", cadena[i]);
-    }
-}
-
-// FUNCION QUE CUENTA LOS CARACTERES DE LA CADENA //
-int tamaño(char cadena[60])
-{
-    printf("\n");
-    int i;
-    for(i = 0; cadena[i] != '\0'; i++);
-    return i;
-}
-
-// FUNCION QUE VOLTEA LA CADENA AL REVES //
-void voltear(char cadena[60])
-{
-    int i, t;
-    printf("\n");
-    t = tamaño(cadena);
-    for (i = t-1; i >= 0; i--)
-    {
-        printf("%c", cadena[i]);
-    }
-}
-
-// FUNCION QUE ELIMINA LOS ESPACIOS DE LA CADENA //
-void noespacios(char cadena[60])
-{
-    int i, t, aux, espacio;
-    printf("\n");
-    t = tamaño(cadena);
-    for(i = 0; i < t; i++)
-    {
-        if (cadena[i] == 32)
-        {
-            espacio = i;
-            aux = i;
-            while (cadena[aux] == 32 && aux < t - 1)
-            aux ++;
-            cadena[espacio] = cadena[aux];
-            cadena[aux] = 32;
-        }
-    }
-    
-    for(i = 0; cadena[i] != '\0'; i++)
-    {
-        printf("%c", cadena[i]);
-    }
-}
-
-// FUNCION QUE PERMITE O NO LA CADENA //
-char permitir(char cadena[60])
-{
-    int i, t;
-    t = tamaño(cadena);
-    printf("\n");
-    for(i = 0; cadena[i] != '\0'; i++)
-    {
-
-    if (cadena[0] == ' ' || cadena[t] == ' ')
-    {
-        printf("\nNO PERMITIDA, debe ser una cadenas sin espacios al inicio ni al final");
-        cadena[i] = '\0';
-    }
-    
-    if (cadena[i] == 32 && cadena[i-1] == 32)
-    {
-        printf("NO PERMITIDO, debe ser cadena sin espacios dobles");
-        cadena[i] = '\0';
-    }
-
-    if (cadena[i] != 32 && (cadena[i] < 65 || cadena[i] > 122))
-    {printf("\nNO PERMITIDO, solo caracteres alfabeticos");
-        cadena[i] = '\0';
-    }
-
-    }printf("\n");
-    for(i = 0; cadena[i] != '\0'; i++)
-    {
-        printf("%c", cadena[i]);
-    }
-    return cadena[60];
-
-}
-
-// FUNCION QUE REALIZA 5 ACCIONES DE LAS FUNCIONES ANTERIORES //
-void todas(char cadena[60])
-{
-    int i;
-    char original[60], original2[60], original3[60], original4[60];
-    for (i = 0; cadena[i] != '\0'; i++)
-    {
-        original[i] = cadena[i];
-        original2[i] = cadena[i];
-        original3[i] = cadena[i];
-        original4[i] = cadena[i];
-    }
-    noespacios(cadena);
-    mayusculas(original);
-    minusculas(original2);
-    voltear(original3);
-    capital(original4);
-
-}
-                                                                    //Todas las funciones antes hechas en el programa de la semana siete.
-//--------------------------------------------------------------------------------------------------------
+    // Comienza comparando el primer elemento de la lista con el segundo. Si el primer elemento es mayor que el segundo, se intercambian.
+    // Luego, compara el segundo elemento con el tercero y repite el intercambio si es necesario.
+    // Continúa este proceso de comparar y, si es necesario, intercambiar, avanzando a través de la lista hasta el penúltimo elemento.
+    // Realiza este proceso  hasta que no haya más elementos para comparar.
+    // Cada iteración se conoce como una pasada. En cada pasada, el elemento más grande burbujea hacia la posición correcta, 
+    // al final de la lista. Después de una pasada completa, reinicia el proceso desde el principio (excluyendo el último elemento que 
+    // ya está en su posición final, ya que es el más grande).
+    // Repite las pasadas hasta que no se realicen intercambios en una pasada completa, lo que indica que la lista está ordenada.
 
 
-//*******************************Todas las funciones para el programa nueve**************************************************
-//***************************************************************************************************************************      
-
-// FUNCION QUE VALIDA NUMEROS //
-int validar_numero(int ri, int rf)
-{
-     system("CLS");
-    int n;
-    char xnum[30];  //Aqui declaramos las variables junto con la cadena de tipo char que usaremos.
-
-    printf("\nDame un numero entre el %d y %d: ", ri, rf);
-        scanf("%c", &xnum);     //Aqui pedimos un valor al usuario que este entre los limtes de los valores establecidos.
-
-    fflush(stdin);  //Aqui limpiamos el valor del buffer, en caso de que se quiera llenar de basura la cadena.
-    gets(xnum); //Aqui pedimos al usaurio un valor para la cadena.
-    n = atoi(xnum);  //Aqui convertimos la cadena de valor caracter a valor entero on la variable xnum.
-
-    if (n > rf)  //Si el valor convertido a entero es mayor al rango final establecido, estara fuera del rango.
-    {
-        printf("\nNUMERO FUERA DE RANGO");
-        n = 70; //Y automaticamente nuestro valor entero n sera igual a 70.
-    }
-    
-    if (n < ri) //Si el valor convertido a entero es menor al rango inicial establecido, sera un numero muy pequeñp para poder usar en el rango.
-    {
-        printf("\nNUMERO MUY PEQUEÑO PARA EL RANGO");
-        n = 30; //Y automaticamente nuestro valor entero n sera igual a 30.
-    }
-
-    return n; //Y como ocuparemos el valor n en posteriores programas lo retornamos.
-    system("PAUSE");
-}
-
-// FUNCION QUE EVITA NUMEROS REPETIDOS EN VECTOR //
-bool no_repetir(int vect[],int n) //Implementamos una funcion que sirva con bandera solo para que nos erepitan los numeros.
-{
-    int i;
-    for (i = 0; i < 15; i++) //El programa comienza en 0,seguira mientras sea menor a 15 y aumenta de uno en uno.
-    {
-        if (n == vect[i]) //Aqui le decimos que el valor retornado n si es igual al tamaño si seran iguales.
-        {
-            return true;
-        }            
-    }
-    return false;  //pero si son diferentes el programa continuara igual
-}
-
-// FUNCION QUE LLENA VECTOR ALEATORIAMENTE //
-void llenar_vect_aleatorio(int vect[], int m, int ri, int rf)
-{
     system("CLS");
-    int rango, i, n;
-    rango = (rf - ri) + 1;  //Declaramos las varibales y declaramos el rango como la resta del rango final menos le rango incial mas uno.
-    
-    srand(time(NULL)); //declaramos el tiempo para poder hacer que se escogan las variables aleatoriamente.
-
-    for(i = 0; i < m; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que 15 o m y haremos que avance de uno en uno.
+    int i, j;
+    Tkey burbuja;
+    for(i = 0; i < tam - 1; i++)
     {
-        do //Y hacemos un do while para que haga que el rango sea aleatorio.
+        for(j = i + 1; j < tam; j++)
         {
-            n = (rand()%rango) + ri; //Nuestra variable n sera el resultado de un valor aleatorio mas el 
-                                     // rango inicial.
-
-        } while (no_repetir(vect, n)); //y declaramos en el while nuestra funcion para que no se repitan
-                            // los valores aleatorios del vector.
-        vect[i] = n;  //Y diremos que el tamaño del vector[i] sera igual a nuestra variable de tipo entero n.
-    }
-    printf("Los valores aleatorios ya se ha puesto correctamente.\n");
-    
-    system("PAUSE");
-}
-
-// FUNCION QUE LLENA MATRIZ DE FORMA ALEATORIA //
-void llenar_matriz(int matriz[4][4], int m, int ri, int rf)
-{
-    system("CLS");
-    int rango, i, n, j;
-    rango = (rf - ri) + 1; //Como en la funcion anterior igual declaramo la formula para el rango.
-
-    srand(time(NULL));  //y declaramos una funcion que nos ayudara para que funcionen los valores aleatorios.
-
-    //Declaramos una matriz de cuatro por cuatro:
-    for(j = 0; j < 4; j++) //Declaramos que comienze en 0,que siga mientras nuestro valor j iniciado en 0 sea menor que 4 y haremos que avance de uno en uno.
-    {
-        for(i = 0; i < 4; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que 4 y haremos que avance de uno en uno.
-        {
-            do{
-                n = (rand()%rango) + ri;
-
-              } while (no_repetir_m(matriz, n));//y declaramos en el while nuestra funcion para que no se repitan
-                            // los valores aleatorios del vector.
-
-        matriz[j][i] = n;  //Le damos la forma de matriz, y le decimos que sea igual a n.
-        }
-    }
-
-    printf("Los valores aleatorios ya se ha puesto correctamente en la Matriz.\n");
-    system("PAUSE");
-}
-
-// FUNCION QUE IMPRIME LA MATRIZ //
-void imprimir_mat(int matriz[4][4], int m, int n)
-{
-     system("CLS");
-
-    printf("\nMATRIZ");
-    int j, i;
-    printf("\n");
-    for (j = 0; j < m; j++) //Declaramos que comienze en 0,que siga mientras nuestro valor j iniciado en 0 sea menor que m o nuestra fila y haremos que avance de uno en uno.
-    {
-        printf("\n["); //hacemos que sea la forma de matriz los valores.
-        for(i = 0; i < n; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que n o nuestra columna y haremos que avance de uno en uno.
-        {
-            printf("%d, ", matriz[j][i]); //Imprimimos dicha matriz para poder visualizar los valores.
-        }
-        printf("]");
-    }
-    printf("\n");
-
-    system("PAUSE");
-}
-
-// FUNCION QUE IMPRIME VECTOR //
-void imprimir_vect(int vect[], int m)
-{
-    system("CLS");
-
-    int i;
-    printf("\nVECTOR");
-
-    printf("\n[");
-    for (i = 0; i < m; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que m o nuestra fila y haremos que avance de uno en uno.
-    {
-        printf("%d, ", vect[i]); //imprimimos los valores aleatorios del vector.
-    }
-    printf("]");
-
-    printf("\n");
-
-    system("PAUSE");
-}
-
-// FUNCION QUE EVITA NUMEROS REPETIDOS EN MATRIZ //
-bool no_repetir_m(int matriz[4][4],int n)
-{
-    //Ahora parecida a la funcion de antes, ahora haremos que no se repitan los valores pero en la matriz.
-    int i, j; //Declaramos las variables para la matriz.
-
-    for (j = 0; j < 4; j++) //Declaramos que comienze en 0,que siga mientras nuestro valor j iniciado en 0 sea menor que 4 osea los valores de las filas y haremos que avance de uno en uno.
-    {
-        for (i = 0; i < 4; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que 4 osea los valores de las columnas y haremos que avance de uno en uno.
-        {
-            if (n == matriz[j][i]) //Ahora declaramos una condicion que diga que si nuestra variable n es igual a la matriz 4+4 de las variables i y j entonces la bandera lo reconocera como identicos.
+            if (vect[j].matricula < vect[i].matricula)
             {
-                return true; //La bandera los reconocera como numeros identicos.
-            }    
-        }        
-    }
-    return false; //De lo contrario el programa continua normalmente.
-}
-
-// FUNCION QUE ORDENA EL VECTOR //
-void ordenar(int vect[], int m)
-{
-    system("CLS");
-    int temp, i, j;
-    for (i = 0; i < m - 1; i++)//Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que m o nuestra fila menos uno y haremos que avance de uno en uno.
-    {
-        for (j = i + 1; j < m; j++) //Declaramos que comienze en la variable i o 0 á 1,que siga mientras nuestro valor j sea menor que m o nuestra fila y haremos que avance de uno en uno.
-        {
-            if (vect[j] < vect[i]) //Si el vector de j es menor que el de i
-            {
-                temp = vect[i];   //haremos que nuestra varaible temp sea igual a el vect[i]
-                vect[i] = vect[j]; //, tambien haremos que el vector de i sea igual que el de j
-                vect[j] = temp; //y por ultimo haremos que el vector de jo sea igual a nuestra variable temp.
+                burbuja = vect[j];
+                vect[j] = vect[i];
+                vect[i] = burbuja;            
             }
         }
     }
 
-    printf("\nVECTOR ORDENADO");
-    printf("\n[");
-    for (i = 0; i < m; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que m o nuestra fila y haremos que avance de uno en uno.
-    {
-        printf("%d, ", vect[i]); //Imprimimos nuestro vector.
-    }
-    printf("]");
-    printf("\n");
-
-     printf("Los valores del vector se han ordenado correctamente.\n");
     system("PAUSE");
 }
+//************************************************************************************************************************
 
-// FUNCION PARA BUSQUEDA SECUENCIA //
-int busq_sec(int vect[], int n, int num)
-{  //Usamos el metodo de busqueda secuancial visto enteriormente en clase.
-    system("CLS");
-    int i;
-    n = num;  //Declaramos las variables y decimos que nuestra variable n de las columnas sera igual a la variable num.
 
-    for (i = 0; i < n; i++) //Declaramos que comienze en 0,que siga mientras nuestro valor i iniciado en 0 sea menor que n o nuestra columna y haremos que avance de uno en uno.
-    {
-        if(num == vect[i]) //Decimos que si numero es igual al vector de i
+//************************************************************************************************************************
+void quickSort(Tkey registros[], int limIzq, int limDer)
+{
+    int izq, der, tem;
+    Tkey central;    //Declaramos las variables.
+
+    izq = limIzq;
+    der = limDer;  //Dos índices limIzq y limDer que representan los límites izquierdo 
+                   //y derecho del segmento del arreglo a ordenar.
+
+    central.matricula = registros[(izq + der) / 2].matricula; 
+                                    //calcula el elemento central en el segmento de la lista que se está ordenando. 
+
+    do{
+        //Utilizamos un bucle do-while para realizar el proceso de particionamiento y ordenamiento dentro del 
+        //segmento definido por los límites limIzq y limDer.
+
+        //Utilizamos dos bucles while para encontrar elementos en el lado izquierdo y derecho del segmento que deben ser intercambiados.
+        while(registros[izq].matricula < central.matricula && izq < limDer) 
         {
-            return i; //retorne la i.
+            
+            izq++;
+        }
+        
+        while(central.matricula < registros[der].matricula && der > limIzq)
+        {
+            der--;
+        }
+
+        //Realizamos los intercambios necesarios si encuentra elementos que deben ser reorganizados.
+        if ( izq <= der)
+        {
+            //Realizamos un intercambio (swap) de elementos en el arreglo registros, específicamente 
+            //intercambiando los elementos en las posiciones izq y der si se cumple la condición de que izq es menor o igual a der.
+            tem = registros[izq].matricula;
+            registros[izq].matricula = registros[der].matricula;
+            registros[der].matricula = tem;
+            izq++;
+            der--;
+        }
+
+    }while(izq <= der);
+
+    if (limIzq < der)
+    {
+        quickSort(registros, limIzq, der);
+    }
+
+    if (limDer > izq)
+    {    
+        quickSort(registros, izq, limDer);
+    }
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+//ordenar un arreglo de tipo Talum usando dos posibles algoritmos de ordenamiento: el algoritmo de la burbuja (burbuja)
+// o el algoritmo Quick Sort (quickSort), dependiendo de la bandera band.
+
+int ordenarR(Tkey registros[], int tam, int band)
+{
+    system("cls");
+    //verifica si el tamaño tam del arreglo es mayor que 0. Si es 0 o menor, imprime un mensaje de error y devuelve 0.
+    if(tam > 0)
+    {
+        //Si band es 0, usa el algoritmo de la burbuja para ordenar el arreglo llamando a la función burbuja. Luego, cambia el valor de band a 1.
+        if(band == 0)
+        {
+            burbuja(registros, tam);
+            band = 1;
+        }
+        else //Si band no es 0, utiliza el algoritmo Quick Sort para ordenar el arreglo llamando a la función quickSort.
+        {
+            quickSort(registros, 0, tam);
+        }
+                
+        printf("HAS ORDENADO LOS DATOS\n");
+        system("PAUSE");
+        return band;
+    }
+    else
+    {
+        printf("PRIMERO DEBE HABER DATOS\n");
+        system("PAUSE");
+        return 0;
+    }
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int eliminarEsp(char cadena[])
+{
+    int tam; // Variable para almacenar el tamaño de la cadena
+    int i;   // Variable para iterar a través de la cadena
+
+    tam = strlen(cadena);  //Se utiliza la función strlen para obtener el tamaño de la cadena cadena.
+
+    if(cadena[0] == '\0')  //Si la cadena está vacía (es decir, el primer carácter es el carácter nulo '\0'), se retorna 0.
+    {
+        return 0;
+    }
+
+    for(i = 0; i <= tam; i++) //Se utiliza un bucle for para iterar a través de la cadena.Dentro del bucle, se verifica
+    {
+        if(cadena[i] == ' ' && cadena[i + 1] == ' ') //si hay espacios consecutivos (' ') en la cadena. Si se encuentran 
+                                                   //espacios consecutivos, la función retorna -1.
+        {
+            return -1;
         }
     }
-    return -1; //Ahora haremos que retorne la i pero negativa.
-
-    system("PAUSE");
+    return 0;
 }
+//************************************************************************************************************************
 
-// FUNCION PARA BUSCAR NUMERO //
-void buscar (int vect[], int m)
+
+//************************************************************************************************************************
+int soloLetras(char cadena[])
 {
-     system("CLS");
-    int num, x, i; //Declaramos las variables.
+    int tam;
+    int i;
 
-    num = validar_numero(100, 200); //Decimos que nuestra variable numero sea igual a la funcion validar numeros
-    x = busq_sec(vect, M, num); //Y declaramos a x como que sea igual a la funcion busqueda secuencial.
+    tam = strlen(cadena); //Se utiliza la función strlen para obtener el tamaño de la cadena cadena.
 
-    if (x != -1) //Y condicionamos que si la funcion busqueda secuencial es diferente de -1
+    if(eliminarEsp(cadena) == 0) //Llama a la función eliminarEsp(cadena) y verifica si retorna 0. 
+                                //Si retorna 0, indica que la cadena no tiene espacios consecutivos y procede a la siguiente verificación. Si no, retorna 0.
     {
+        return 0;
+    }
 
-        printf("\nSi existe"); //Entonces si es un numero existente
-        printf("\n%d esta en el indice %d", num, x); //y especificaremos el indice en donde estara.
+    for(i =  0; i <= tam; i++)
+    {
+        //Se utiliza un bucle for para iterar a través de la cadena.
+        //Dentro del bucle, verifica si cada carácter de la cadena no es una letra. Si no es una letra, retorna -1.
+        if(cadena[i] < 'A' || cadena[i] > 'z')
+        {
+            return -1;
+        }
+        if(cadena[i] > 'Z' && cadena[i] < 'a')
+        {
+            return -1;
+        }
+        //Se verifica tanto mayúsculas como minúsculas, asegurándose de que estén dentro del rango de letras en el código ASCII.
+        //Se devuelve 0 si todos los caracteres son letras.
+        return 0;
+    }
+    return 0;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+void validaCad(char cadena[], const char *msg)
+{
+    int tam, band; //Se declara la función validaCad que toma un arreglo de caracteres cadena[] y un puntero a constante msg.
+                    //Se declaran dos variables enteras tam y band.
+
+    band = 1;  //Inicializar la variable band con el valor 1.
+    do{
+        //Utiliza un bucle do-while que se ejecuta al menos una vez y continúa ejecutándose mientras band tenga el valor 1.
+
+        printf("%s", msg); //Imprime el mensaje proporcionado por el puntero msg.
+        fflush(stdin); //Limpia el buffer de entrada usando fflush(stdin).
+        gets(cadena); //Lee una línea de texto desde la entrada estándar y la almacena en cadena.
+        
+        if (soloLetras(cadena) == 0)
+        {
+            if(eliminarEsp(cadena) == -1)
+            {
+                printf("NO SE PERMITEN ESPACIOS\n");
+                continue;
+            }
+        }
+        else
+        {
+            if(cadena[0] == ' ')
+            {
+                printf("NO SE PERMITEN ESPACIOS\n");
+                continue;
+            }
+            else
+            {
+                printf("INGRESA SOLO LETRAS\n");
+                continue;
+            }
+        }
+        //Llama a la función soloLetras para verificar si la cadena contiene solo letras.Si contiene solo letras, verifica si hay espacios
+        //consecutivos utilizando eliminarEsp.Imprime mensajes de error apropiados según la validación realizada y continua el bucle si se detectan errores.
+
+        strupr(cadena); //Convierte la cadena a mayúsculas utilizando strupr.
+        band = 0; //Cambia el valor de band a 0, lo que indica que no se deben realizar más iteraciones en el bucle.
+
+    }while(band == 1);      
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int existeTkey(long mat, Tkey *reg, int tam)
+{
+    int i;
+    
+    for(i = 0; i <= tam; i++) //Utiliza un bucle for para iterar a través del arreglo de estructuras Talum.
+    {
+        if (mat == reg[i].matricula) //Dentro del bucle, verifica si la matrícula (mat) coincide con la matrícula de la estructura actual del arreglo.
+        {
+            return 1; //Si encuentra una coincidencia, retorna 1 indicando que la matrícula existe en el arreglo.
+        }
+    }
+    return 0;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+Tkey datosR(Tkey registros[], int tam)
+{
+    Tkey reg;
+    long matricula;
+    char *nombre;
+    char *apellido;
+    int estatus;
+    int sexo;
+    int edad;
+    //Se declaran varias variables para almacenar información como matrícula, nombre, apellido, estatus, sexo y edad.
+    //Se declara una estructura Talum llamada reg para almacenar los datos de un estudiante.
+
+    matricula = (rand() % 99999) + 300000;
+    while(existeTkey(matricula, registros, tam) == 1)
+    {
+        matricula = (rand() % 99999) + 300000;
+    }   //Genera una matrícula aleatoria en el rango entre 300,000 y 399,999.
+        //Utiliza un bucle para asegurarse de que la matrícula generada sea única en el arreglo registros usando la función existeTkey.
+
+    edad = (rand() % 60) + 17;
+    estatus = rand() % 2;
+    sexo = rand() % 2;   //Genera datos aleatorios para la edad, estatus y sexo del estudiante.
+     
+    reg.estatus = estatus;
+    reg.matricula = matricula;
+    reg.edad = edad;
+    reg.genero = sexo;       //Asigna los datos generados a la estructura reg correspondiente.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    char nombresM[][31] = {"Juan", "Luis", "Carlos", "Pedro"};
+    char nombresF[][31] = {"Maria", "Ana", "Laura", "Sofia"};
+    char apellidosP[][31] = {"Garcia", "Rodriguez", "Martínez", "Lopez", "Perez", "Fernandez", "Gonzalez", "Hernandez"};
+    char apellidosM[][31] = {"Sanchez", "Ramirez", "Torres", "Diaz", "Vargas", "Jimenez", "Ruiz", "Silva"};
+    int apellido_paternoIndex = rand() % 8;
+    int apellido_maternoIndex = rand() % 8;
+    if (sexo == 1) 
+    {
+        // Genera un índice aleatorio para nombres masculinos
+        int nombreIndex = rand() % 4;
+        strcpy(reg.nombre, nombresM[nombreIndex]);
+    } 
+    else 
+    {
+        // Genera un índice aleatorio para nombres femeninos
+        int nombreIndex = rand() % 4;
+        strcpy(reg.nombre, nombresF[nombreIndex]);
+    }
+
+    /*strcpy(reg.nombre, nombres[nombreIndex]);*/
+    strcpy(reg.apellido_paterno, apellidosP[apellido_paternoIndex]);
+    strcpy(reg.apellido_materno, apellidosM[apellido_maternoIndex]);
+    
+    //Se tienen listas de nombres y apellidos masculinos y femeninos predefinidos.
+    //Se elige aleatoriamente un nombre y dos apellidos, dependiendo del sexo.  
+    //Se asignan estos nombres y apellidos a la estructura reg.
+
+    return reg;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int agregarR(Tkey registros[], int tam)
+{   
+    system("CLS");
+    int i;
+    int band = 0; //Se declaran variables enteras i e band para iterar y controlar el proceso de generación de registros.
+
+    for(i = 0; i < 100; i++) //Utiliza un bucle for para generar 100 registros.
+    {
+        system("CLS");
+        registros[tam] = datosR(registros, tam); //En cada iteración, se generan datos aleatorios para un estudiante 
+                                                //utilizando la función datosR y se asignan al arreglo de registros en la posición tam.
+        system("CLS");
+        tam++; //Después de cada iteración, se incrementa tam para mantener un registro del tamaño actual del arreglo de registros.
+    }
+
+    printf("HAS GENERADO 100 REGISTROS\n");
+    system("PAUSE");
+
+    return tam;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+Tkey datosM(Tkey registros[], int tam)
+{
+
+    Tkey reg; //Se declara una estructura Talum llamada reg para almacenar los datos de un estudiante.
+    long mat; //Se declara la función datosM que toma un arreglo de estructuras Talum llamado registros y un entero tam.
+    char apPat[21], apMat[21], nombre[41]; //Se declaran variables para almacenar la matrícula, apellidos y nombre del estudiante.
+
+    do{
+        //Utiliza un bucle do-while para solicitar y validar los datos del estudiante.
+
+        reg.estatus = validaInt(0, 1,"0) INACTIVO 1) ACTIVO","FUERA DE RANGO");
+        mat = validaL(300000, 399999,"INGRESA TU MATRICULA: ","MATRICULA INVALIDA");
+        //Se solicita el estatus, matrícula, apellidos, nombre, edad y género del estudiante.
+
+        if(existeTkey(mat, registros, tam) == 1) //Se utiliza la función existeTkey para verificar si la matrícula ingresada ya existe en los registros.
+        {
+
+            printf("ESTA MATRICULA YA EXISTE \n INGRESE UNA MATRICULA VALIDA\n");
+            
+        }
+
+    }while(existeTkey(mat, registros, tam) == 1);
+    
+    reg.matricula = mat;
+
+    validaCad(apPat, "INGRESA TU APELLIDO PATERNO: \n");
+    strcpy(reg.apellido_paterno, apPat);
+
+    validaCad(apMat, "INGRESA TU APELLIDO MATERNO: \n");
+    strcpy(reg.apellido_materno, apMat);
+
+    validaCad(nombre, "INGRESA TU nombre: \n");
+    strcpy(reg.nombre, nombre);
+
+    reg.edad = validaInt(17, 80,"INGRESA LA EDAD: ","EDAD FUERA DE RANGO");
+    reg.genero = validaInt(1, 2,"INGRESE EL GENERO\n 1) HOMBRE\n 2) MUJER","OPCION FUERA DE RANGO"); 
+
+    //Asigna los datos ingresados por el usuario a la estructura reg correspondiente.
+
+    return reg;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+int agregarM(Tkey registros[], int tam)
+{   
+    int op = 1;
+
+    do{
+        //Se utiliza un bucle do-while para permitir al usuario agregar múltiples registros o salir del proceso.
+
+        system("CLS");
+        registros[tam] = datosM(registros, tam); //Genera datos de un estudiante utilizando la función datosM y 
+                                                //asigna estos datos al arreglo de registros en la posición tam.
+        system("CLS");
+        tam++;  //Incrementa tam para mantener un registro del tamaño actual del arreglo de registros.
+
+        op = validaInt(0, 1,"1.- AGREGAR DATOS \n0.- SALIR \n SELECCIONE UNA OPCION: ","OPCION FUERA DE RANGO");
+        //Pide al usuario que seleccione una opción para agregar más registros o salir.
+
+    }while(op == 1);
+
+    return tam;
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+void imprimirR(Tkey registros[], int tam)
+{
+    Tkey reg;
+    int i;
+    char *sexo;
+    //Se declara una variable para almacenar un registro individual y una variable para iterar a través del arreglo de registros.
+    //También se declara una variable para almacenar el sexo del estudiante.
+
+    system("CLS");
+    
+    if (tam > 0) //Verifica si hay registros almacenados (tam > 0).
+    {
+        printf("%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        
+        for (i = 0; i < tam; i++)  //Utiliza un bucle for para iterar a través del arreglo de registros.
+        {
+
+            if(registros[i].genero == 1)
+            {
+
+                sexo ="HOMBRE";
+
+            }
+
+            else
+            {
+
+                sexo ="MUJER";
+
+            }
+
+            if (registros[i].matricula != -1 && registros[i].matricula >= 300000 && registros[i].matricula <= 399999)
+            {
+
+                printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[i].estatus, registros[i].matricula, registros[i].nombre, registros[i].apellido_paterno, registros[i].apellido_materno, registros[i].edad, sexo);
+
+            }
+
+        }
+            //Determina el sexo del estudiante en función del valor del campo genero en la estructura Talum.
+            //Verifica si la matrícula del estudiante es válida (entre 300000 y 399999) antes de imprimir los datos del estudiante.
 
     }
 
     else
     {
-        //Y en su defecto si es == a -1 entonces no existira.
-        printf("\nNo existe");
+
+        printf("INGRESE DATOS PARA PODER IMPRIMIR\n");
 
     }
+
+    printf("\n");
     system("PAUSE");
 }
+//************************************************************************************************************************
 
 
-//*************************************************************************************************************************** 
+//************************************************************************************************************************
+void buscarR(Tkey registros[], int tam)
+{
+    system("CLS");
+    long mat;
+    int pos, id, i;
+    char *sexo;
+    int band = 0;
+    //Se declara una variable para almacenar la matrícula a buscar (mat), la posición encontrada (pos), la matrícula ingresada (id), y una variable para iterar (i).
+    //También se declara una variable para almacenar el sexo del estudiante y una bandera para indicar si se encontró la matrícula (band).
+
+    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES BUSCAR: ","MATRICULA INVALIDA");
+            //Utiliza la función validaL para solicitar y validar la matrícula a buscar, asegurando que esté en el rango válido.
+
+    pos = busqSec(registros, tam, id); //Utiliza la función busqSec para buscar la matrícula en el arreglo de registros.
+
+    if (pos != -1)  //Si se encuentra la matrícula (pos != -1), continúa con la impresión de los resultados. De lo contrario, 
+                    //imprime un mensaje indicando que no se encontró la matrícula.
+    {
+        system("CLS");
+        printf("\nRESULTADOS ENCONTRADO.\n%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "Eestatus", "matriculaCULA", "nombre", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        
+        if(registros[pos].genero == 1) //Determina el sexo del estudiante en función del valor del campo genero en la estructura Talum.
+        {
+            sexo ="HOMBRE";
+        }
+        else
+        {
+            sexo ="MUJER";
+        }
+
+        if (registros[pos].matricula != -1 && registros[pos].matricula >= 300000 && registros[pos].matricula <= 399999)
+                            //Verifica si la matrícula del estudiante es válida (entre 300000 y 399999) antes de imprimir los datos del estudiante.
+        {
+            printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[pos].estatus, registros[pos].matricula, registros[pos].nombre, registros[pos].apellido_paterno, registros[pos].apellido_materno, registros[pos].edad, sexo);
+        }
+    }
+    else
+    {
+        printf("NO SE ENCONTRO LA MATRICULA\n");
+    }
+
+}
+//************************************************************************************************************************
+
+
+//************************************************************************************************************************
+void eliminarR(Tkey registros[], int tam)
+{
+    system("CLS");
+
+    long id;
+    int pos, op;
+
+    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES ELIMINAR: ","MATRICULA INVALIDA");
+            //Utiliza la función validaL para solicitar y validar la matrícula a eliminar, asegurando que esté en el rango válido.
+
+    pos = busqSec(registros, tam, id);  //Utiliza la función busqSec para buscar la matrícula en el arreglo de registros.
+
+    if (pos != -1) //Si se encuentra la matrícula (pos != -1), continúa con la eliminación. De lo contrario, imprime un mensaje indicando que la matrícula no existe.
+    {
+        imprimirR(registros, tam);
+        op = validaInt(1, 2,"1) ELIMINAR\n 2) NO ELIMINAR\n","OPCION FUERA DE RANGO");
+        //Utiliza la función imprimirR para mostrar los datos del estudiante a eliminar.
+        //Y solicita al usuario que confirme si desea eliminar o no al estudiante.
+
+        if (op == 1) //Si el usuario confirma la opción de eliminar (op == 1), establece el estatus del estudiante a 0, marcando así al estudiante como eliminado.
+        {
+            registros[pos].estatus = 0;
+        }    
+    }
+    else
+    {
+        printf("LA MATRICULA NO EXISTE\n");
+    }
+}
+//************************************************************************************************************************
