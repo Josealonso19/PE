@@ -66,7 +66,7 @@ int tam_cadena(char cadena[]) //Aqui se calcula la longitud o tamaño de la cade
     for(i = 0; cadena[i] != '\0'; i++);
     return i;
 }
-
+//Aqui se imprime lo escrito en la cadena de manera Normal:
 void salida_numero1(char cadena[], char mensaje[]) //Aqui ponemos tal cual el valor agregado en la cadena
 {
      int i;
@@ -78,6 +78,7 @@ void salida_numero1(char cadena[], char mensaje[]) //Aqui ponemos tal cual el va
     printf("\n");
 }
 
+//Aqui se imprime lo escrito en la cadena al revez:
 void salida_numero2(char cadena[], char mensaje[])
 {
     int i, t;
@@ -90,6 +91,7 @@ void salida_numero2(char cadena[], char mensaje[])
     printf("\n");
 }
 
+//Aqui se imprime lo escrito en la cadena de manera vertical:
 void salida_numero3(char cadena[], char mensaje[])
 {
     int i, t;
@@ -102,6 +104,7 @@ void salida_numero3(char cadena[], char mensaje[])
     printf("\n");
 }
 
+//Aqui se imprime lo escrito en la cadena al revez pero de manera vertical:
 void salida_numero4(char cadena[], char mensaje[])
 {
     int i, t;
@@ -114,6 +117,7 @@ void salida_numero4(char cadena[], char mensaje[])
     printf("\n");
 }
 
+//Aqui se imprime lo escrito en la cadena desde lo escrito hasta la ultima letra:
 void salida_numero5(char cadena[], char mensaje[])
 {
     int i, j, t;
@@ -129,6 +133,8 @@ void salida_numero5(char cadena[], char mensaje[])
     }
 }
 
+//Aqui se imprime lo escrito en la cadena desde lo escrito hasta la ultima letra
+,pero todo al revez:
 void salida_numero6(char cadena[], char mensaje[])
 {
     int i, j, t;
@@ -144,6 +150,8 @@ void salida_numero6(char cadena[], char mensaje[])
     }
 }
 
+//Aqui se imprime lo escrito en la cadena desde lo escrito hasta la ultima letra
+,pero poco a poco quitando la primera letra hasta quedar con la ultima letra de la derecha:
 void salida_numero7(char cadena[], char mensaje[])
 {
     int i, j, t;
@@ -159,6 +167,8 @@ void salida_numero7(char cadena[], char mensaje[])
     }
 }
 
+//Aqui se imprime lo escrito en la cadena desde lo escrito hasta la ultima letra
+,pero poco a poco quitando la primera letra hasta quedar con la ultima letra de la derecha (pero haciendo la frase al revez):
 void salida_numero8(char cadena[], char mensaje[])
 {
     int i, j, t;
@@ -174,6 +184,7 @@ void salida_numero8(char cadena[], char mensaje[])
     }
 }
 
+//Aqui se imprime lo escrito en la cadena solo la segunda,tercera,quinta y sexta letra:
 void salida_numero9(char cadena[], char mensaje[])
 {
      int i, j, t;
@@ -225,6 +236,7 @@ void salida_numero9(char cadena[], char mensaje[])
 
 }
 
+//Aqui se imprime lo escrito en la cadena solo la primera,cuarta,sexta y octava letra:
 void salida_numero10(char cadena[],char mensaje[]) {
     int longitud = strlen(cadena);
     printf("\n%s\n ", mensaje);
