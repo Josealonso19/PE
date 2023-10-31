@@ -1,13 +1,3 @@
-// Lopez Michel Jose Alonso   Matricula: 370650
-// Fecha inicio: 15/10/2023   Fecha fin: 23/10/2023
-// Descripcion: En este programa hacemos el curp segun los datos que ponga el usuario, usando aparte de 
-// este archivo .cpp tambien usamos una libreria .h para ahi hacer todas las funciones que necesitaremos
-// ademas de que en el archivo .cpp solo mandaremos a llamar dichas funciones para poder usar los datos.
-// LMJ_A01_01_432
-
-
-//  ./actividadcurp/LMJ_A09_CURP_432
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -203,16 +193,17 @@ void curp()
             curp[3] = nombre2[0];
         }
     }    
-    curp[4] = '\0';
+    curp[4] = '\0';  //En esta línea, el código establece el quinto carácter de la cadena 
     groserias(curp);
-    curp[4] = anio[2];
-    curp[5] = anio[3];
-    curp[6] = mes[0];
-    curp[7] = mes[1];
-    curp[8] = dia[0];
-    curp[9] = dia[1];
-    curp[10] = gen(genero);
+    curp[4] = anio[2]; //En esta línea, el código toma el tercer carácter de la cadena anio y lo coloca en el quinto carácter de la cadena curp.
+    curp[5] = anio[3]; //Similar al paso anterior, el cuarto carácter de la cadena anio se coloca en el sexto carácter de la cadena curp.
+    curp[6] = mes[0]; //En esta línea, el código coloca el primer carácter de la cadena mes en el séptimo carácter de la cadena curp.
+    curp[7] = mes[1]; //Similar al paso anterior, el segundo carácter de la cadena mes se coloca en el octavo carácter de la cadena curp.
+    curp[8] = dia[0]; //Aquí, el código coloca el primer carácter de la cadena dia en el noveno carácter de la cadena curp.
+    curp[9] = dia[1]; //Similar al paso anterior, el segundo carácter de la cadena dia se coloca en el décimo carácter de la cadena curp.
+    curp[10] = gen(genero); //Se llama a la función gen pasando genero como argumento y el resultado se coloca en el undécimo carácter de la cadena curp.
     entidad(ent_fed, curp);/*Aqui se alteran los campos 11 y 12 del curp*/
+
     if(dela_del(ap_pat) == 0)
     {
         curp[13] = busq_cons(ap_pat);
@@ -277,8 +268,6 @@ void curp()
         printf("%c", curp[i]);
     }
     printf("\n");
-
-    GuardarCurpEnArchivo(curp, nombre1, anio, mes, dia, ent_abrev[atoi(ent_fed)-1], genero);
     system("pause");
 }
 //***************************************************************************************************************************************************************************//
@@ -289,9 +278,10 @@ int meses(char anio[], char mes[])
     xmes = atoi(mes);
 
     meses[0] = 31;/*Enero*/
-    if(xanio % 4 == 0 && xanio % 100 != 0 || xanio % 400 == 0)
+    if(xanio % 4 == 0 && xanio % 100 != 0 || xanio % 400 == 0) //esta línea de código verifica si xanio es un año bisiesto de acuerdo con las 
+                         //reglas estándar. Un año es bisiesto si es divisible por 4, pero no si es divisible por 100 a menos que también sea divisible por 400.
     {
-        meses[1] = 29;/*Febrero*/
+        meses[1] = 29;/*Febrero*/  //Año viciesto.
     }
     else
     {
@@ -314,7 +304,10 @@ int meses(char anio[], char mes[])
 void groserias(char cadena[])
 {
     int i;
-
+//Comparamos cada elemento del arreglo palabras_groseras con la cadena cadena utilizando la función strcmp. 
+//(esta parte del código verifica si cadena es igual a alguna de las palabras groseras almacenadas en palabras_groseras.)  
+//Si la comparación strcmp devuelve 0, significa que cadena coincide con una palabra grosera en el arreglo. En ese caso, 
+//el código modifica el segundo carácter de cadena (índice 1) y lo reemplaza con la letra 'X'.
     for(i=0; i<(sizeof(palabras_groseras)/sizeof(palabras_groseras[0])); i++)
     {
         if(strcmp(cadena, palabras_groseras[i]) == 0)
@@ -344,18 +337,25 @@ void entidad(char cadena[], char curp[])
     int xcadena;
 
     xcadena = atoi(cadena);
-    xcadena--;
+    xcadena--; // decrementa el valor de xcadena en 1. Esto significa que se resta 1 al valor entero que obtuvimos al convertirlo en entero,
 
-    curp[11] = ent_abrev[xcadena][0];
-    curp[12] = ent_abrev[xcadena][1];
+    curp[11] = ent_abrev[xcadena][0];// Aquí, asigne el primer carácter de la cadena ubicada en la posición xcadena del arreglo ent_abrev al duodécimo carácter de la cadena curp.
+    curp[12] = ent_abrev[xcadena][1];//asignamos el segundo carácter de la cadena ubicada en la posición xcadena del arreglo ent_abrev al decimotercer carácter de la cadena curp.
 }
 //***************************************************************************************************************************************************************************//
 int jose_maria(char nombre1[], char nombre2[])
 {
+    //En esta línea, se está comparando el contenido de la cadena nombre1 con la cadena "JOSE" usando la función strcmp. Si el resultado de la comparación 
+    //es igual a 0 (lo que significa que nombre1 es igual a "JOSE") y si el primer carácter de la cadena nombre2 no es un carácter nulo ('\0'), entonces el 
+    //código entra en el bloque if y retorna un valor de 0.
     if(strcmp(nombre1, "JOSE") == 0 && nombre2[0] != '\0' )
     {
         return 0;
     }
+
+    //En caso contrario, el código verifica otra condición dentro del bloque else. else se ejecutará si la primera condición no se cumple. En este caso, el 
+    //código verifica si nombre1 es igual a "MARIA" y si el primer carácter de nombre2 no es un carácter nulo. Si ambas condiciones son verdaderas, nuevamente, 
+    //se retorna un valor de 0.
     else
     {
         if(strcmp(nombre1, "MARIA") == 0 && nombre2[0] != '\0')
@@ -363,8 +363,6 @@ int jose_maria(char nombre1[], char nombre2[])
             return 0;
         }
     }
-
-    
         return 1;
 }
 //***************************************************************************************************************************************************************************//
@@ -373,24 +371,29 @@ char a_o_0(char anio[])
     int xanio;
 
     xanio = atoi(anio);
+
+    //Si xanio es menor que 2000, la función retorna '0'.
     if(xanio < 2000)
     {
         return '0';
     }
     else
     {
+        //Si xanio es mayor o igual a 2000 pero menor que 2010, la función retorna 'A'.
         if(xanio < 2010)
         {
             return 'A';
         }
         else
         {
+            //Si xanio es mayor o igual a 2010 pero menor que 2020, la función retorna 'B'.
             if(xanio < 2020)
             {
                 return 'B';
             }
             else
             {
+                //Si xanio es mayor o igual a 2020 pero menor que 2030, la función retorna 'C'.
                 if(xanio < 2030)
                 {
                     return 'C';
@@ -398,29 +401,4 @@ char a_o_0(char anio[])
             }
         }
     }
-}
-
-
-//*****************************************************************************************************
-void GuardarCurpEnArchivo(const char* curp, const char* nombre, const char* anio, const char* mes, const char* dia, const char* entidad, const char* genero) 
-{
-
-    char nombreArchivo[200];
-    sprintf(nombreArchivo, "CURP_%s.txt", curp);
-
-    FILE* archivo;
-    archivo = fopen(nombreArchivo, "a");  // Abre el archivo para agregar (append) datos
-
-    if (archivo != NULL) 
-    {
-        fprintf(archivo, "Nombre: %s\nCURP: %s\nEntidad Federativa: %s\nGenero: %s\n\n", nombre, curp,entidad,genero);
-        fclose(archivo);
-        printf("El CURP se ha guardado con el nombre %s\n", nombreArchivo);
-
-    } 
-    else 
-    {
-        printf("Error al guardar el CURP en el archivo.\n");
-    }
-
 }
