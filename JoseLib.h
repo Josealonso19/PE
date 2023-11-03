@@ -1,195 +1,270 @@
-// Lopez Michel Jose Alonso   Matricula: 370650
-// Fecha inicio: 15/10/2023   Fecha fin: 23/10/2023
-// Descripcion: En esta libreria haremos todas las funiones que mas adelante usaremos en el programa .cpp
-// , tambien es importante recalcar que en todo momento validaremos el programa, ya que esto nos sera de 
-// gran ayuda para en todo momento poder usar los datos que retornaremos de las funciones y al momento de 
-// usarlos en el archivo .cpp
+// Lopez Michel Jose Alonso Matricula: 370650
+// Fecha inicio: 23/10/2023 Fecha fin: 02/11/2023
+// En esta libreria usaremos las funciones de la practica 10 para poder implementarlas en el archivo .cpp y de esta manera poder lograr el resultado
+// esperado.
+
+//JoseLib.h
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-#define TRUE 1
-#define FALSE 0
-#define NUM_COL 4
-
-void GuardarCurpEnArchivo(const char* curp, const char* nombre, const char* anio, const char* mes, const char* dia, const char* entidad, const char* genero);
-
-int vali_int(int ran_inf, int ran_sup, char *msg, char *msg_error)
+typedef struct Tkey
 {
-    int num;
-    char char_num[25];
+    long matri;
+    char nombre[31];
+    char apellidoP[31];
+    char apellidoM[31];
+    int status;
+    int genero;
+    int edad;
+     
+}Tkey;
 
-    do{
-        printf("%s", msg);
-        fflush(stdin);
-        gets(char_num);
-        num = atoi(char_num);
-
-        if (num < ran_inf || num > ran_sup)
-        {
-            printf("%s\n", msg_error);
-        }
-    }while(num < ran_inf || num > ran_sup);
-
-    return num;
-}
-
-long vali_long(long ran_inf, long ran_sup, char *msg, char *msg_error)
+int validaL(long ri, long rf,const char msg[],const char msgError[])
 {
     long num;
-    char char_num[25];
+    char xnum[30];
 
-    do{
-        printf("%s", msg);
-        fflush(stdin);
-        gets(char_num);
-        num = atoi(char_num);
-
-        if (num < ran_inf || num > ran_sup)
-        {
-            printf("%s\n", msg_error);
-        }
-    }while(num < ran_inf || num > ran_sup);
-
-    return num;
-}
-
-void vali_num_cad(char cadena[], int ran_inf, int ran_sup, int max, char *msg, char *msg_error)
-{
-    char xnum[max];
-    int num;
-
-    do{
-        printf("%s", msg);
+    do
+    {
+        puts(msg);
         fflush(stdin);
         gets(xnum);
         num = atoi(xnum);
-        if((num < ran_inf || num > ran_sup) || strlen(xnum) > max)
+
+        if (num < ri || num > rf)
         {
-            printf("%s\n", msg_error);
+            printf("%s", msgError);
+            printf("\n");
         }
-    }while((num < ran_inf || num > ran_sup) || strlen(xnum) > max);
+    } while (num < ri || num > rf);
 
-    strcpy(cadena, xnum);
-
+    return num;
 }
 
-int busq_sec(int vect[], int len, int val)
+int validaInt(int ri, int rf,const char msg[],const char msgError[])
+{
+    int num;
+    char xnum[30];
+
+    do
+    {
+        puts(msg);
+        fflush(stdin);
+        gets(xnum);
+        num = atoi(xnum);
+
+        if (num < ri || num > rf)
+        {
+            printf("%s", msgError);
+            printf("\n");
+        }
+    } while (num < ri || num > rf);
+
+    return num;
+}
+int busqSec(Tkey *registros, int tam, long matricula)
 {
     int i;
-    for(i=0; i<len; i++)
+    for (i = 0; i < tam; i++)
     {
-        if(val == vect[i])
+        if(registros[i].matri == matricula)
         {
             return i;
         }
     }
+
     return -1;
 }
-
-char busq_vocal(char cadena[])
+void burbuja(Tkey vect[], int tam)
 {
-    int tam, i;
-    tam = strlen(cadena);
+    system("CLS");
 
-    for(i=1; i<tam; i++)
+    int i, j;
+    Tkey burbuja;
+
+    for(i = 0; i < tam - 1; i++)
     {
-        if(cadena[i]=='A' || cadena[i]=='E' || cadena[i]=='I' || cadena[i]=='O' || cadena[i]=='U')
+        for(j = i + 1; j < tam; j++)
         {
-            return cadena[i];
+            if (vect[j].matri < vect[i].matri)
+            {
+                burbuja = vect[j];
+                vect[j] = vect[i];
+                vect[i] = burbuja;            
+            }
         }
     }
 
-    return 'X';
+    system("PAUSE");
 }
 
-char busq_vocal_dela(char cadena[])
+void quickSort(Tkey registros[], int limIzq, int limDer)
 {
-    int tam, i;
-    tam = strlen(cadena);
+    int izq, der, tem;
+    Tkey central;
 
-    for(i=7; i<tam; i++)
-    {
-        if(cadena[i]=='A' || cadena[i]=='E' || cadena[i]=='I' || cadena[i]=='O' || cadena[i]=='U')
+    izq = limIzq;
+    der = limDer;
+    central.matri = registros[(izq + der) / 2].matri;
+
+    do{
+
+        while(registros[izq].matri < central.matri && izq < limDer)
         {
-            return cadena[i];
+            izq++;
         }
+        
+        while(central.matri < registros[der].matri && der > limIzq)
+        {
+            der--;
+        }
+
+        if ( izq <= der)
+        {
+            tem = registros[izq].matri;
+            registros[izq].matri = registros[der].matri;
+            registros[der].matri = tem;
+            izq++;
+            der--;
+        }
+    }while(izq <= der);
+
+    if (limIzq < der)
+    {
+        quickSort(registros, limIzq, der);
     }
 
-    return 'X';
+    if (limDer > izq)
+    {    
+        quickSort(registros, izq, limDer);
+    }
 }
-
-char busq_vocal_del(char cadena[])
+int ordenarR(Tkey registros[], int tam, int band)
 {
-    int tam, i;
-    tam = strlen(cadena);
 
-    for(i=5; i<tam; i++)
+    system("cls");
+    if(tam > 0)
     {
-        if(cadena[i]=='A' || cadena[i]=='E' || cadena[i]=='I' || cadena[i]=='O' || cadena[i]=='U')
+        if(band == 0)
         {
-            return cadena[i];
+            burbuja(registros, tam);
+            band = 1;
         }
+
+        else
+        {
+            quickSort(registros, 0, tam);
+        }
+        
+        printf("HAS ORDENADO LOS DATOS\n");
+        system("PAUSE");
+        return band;
     }
 
-    return 'X';
+    else
+    {
+        printf("PRIMERO DEBE HABER DATOS\n");
+        system("PAUSE");
+        return 0;
+    }
 }
-
-char busq_cons(char cadena[])
+int eliminarEsp(char cadena[])
 {
-    int tam, i;
+    int tam;
+    int i;
+
     tam = strlen(cadena);
 
-    for(i=1; i<tam; i++)
+    if(cadena[0] == '\0')
     {
-        if(cadena[i]!='A' && cadena[i]!='E' && cadena[i]!='I' && cadena[i]!='O' && cadena[i]!='U')
-        {
-            return cadena[i];
-        }
+        return 0;
     }
 
-    return 'X';
+    for(i = 0; i <= tam; i++)
+    {
+        if(cadena[i] == ' ' && cadena[i + 1] == ' ')
+        {
+            return -1;
+        }
+    }
+    return 0;
 }
-
-char busq_cons_dela(char cadena[])
+int soloLetras(char cadena[])
 {
-    int tam, i;
+    int tam;
+    int i;
+
     tam = strlen(cadena);
 
-    for(i=7; i<tam; i++)
+    if(eliminarEsp(cadena) == 0)
     {
-        if(cadena[i]!='A' && cadena[i]!='E' && cadena[i]!='I' && cadena[i]!='O' && cadena[i]!='U')
-        {
-            return cadena[i];
-        }
+        return 0;
     }
 
-    return 'X';
-}
+    for(i =  0; i <= tam; i++)
+    {
+        if(cadena[i] < 'A' || cadena[i] > 'z')
+        {
+            return -1;
+        }
+        if(cadena[i] > 'Z' && cadena[i] < 'a')
+        {
+            return -1;
+        }
 
-char busq_cons_del(char cadena[])
+        return 0;
+    }
+    return 0;
+}
+void validaCad(char cadena[], const char *msg)
 {
-    int tam, i;
-    tam = strlen(cadena);
+    int tam, band;
 
-    for(i=5; i<tam; i++)
-    {
-        if(cadena[i]!='A' && cadena[i]!='E' && cadena[i]!='I' && cadena[i]!='O' && cadena[i]!='U')
+    band = 1;
+    do{
+
+        printf("%s", msg);
+        fflush(stdin);
+        gets(cadena);
+        
+        if (soloLetras(cadena) == 0)
         {
-            return cadena[i];
+            if(eliminarEsp(cadena) == -1)
+            {
+                printf("NO SE PERMITEN ESPACIOS\n");
+                continue;
+            }
         }
-    }
+        else
+        {
+            if(cadena[0] == ' ')
+            {
+                printf("NO SE PERMITEN ESPACIOS\n");
+                continue;
+            }
+            else
+            {
+                printf("INGRESA SOLO LETRAS\n");
+                continue;
+            }
+        }
 
-    return 'X';
+        strupr(cadena);
+        band = 0;
+
+    }while(band == 1);      
 }
 
-int existe_vect(int num, int *vect, int len)
+int existeTkey(long mat, Tkey *reg, int tam)
 {
     int i;
-    for(i=0; i <= len; i++)
+    
+    for(i = 0; i <= tam; i++)
     {
-        if (num == vect[i])
+        if (mat == reg[i].matri)
         {
             return 1;
         }
@@ -197,234 +272,276 @@ int existe_vect(int num, int *vect, int len)
     return 0;
 }
 
-int existe_mat(int num, int mat[][NUM_COL], int len)
+Tkey datosR(Tkey registros[], int tam)
 {
-    int i, j;
-    for(i=0; i <= len; i++)
+    Tkey reg;
+    long matri;
+    char *nombre;
+    char *apellido;
+    int status;
+    int sexo;
+    int edad;
+
+    matri = (rand() % 99999) + 300000;
+    while(existeTkey(matri, registros, tam) == 1)
     {
-        for(j=0; j <= len; j++)
-        {
-            if (num == mat[i][j])
-            {
-                return 1;
-            }
-        }
+        matri = (rand() % 99999) + 300000;
     }
-    return 0;
-}
 
-void uno_a_dos_digitos(char cadena[2])
-{
-    int xnum_temp;
-    xnum_temp = atoi(cadena);
+    edad = (rand() % 60) + 17;
+    status = rand() % 2;
+    sexo = (rand() % 2) + 1;
+    
+    reg.status = status;
+    reg.matri = matri;
+    reg.edad = edad;
+    reg.genero = sexo;
+    
+    
+    
+    strcpy(reg.apellidoP, apellido);
 
-    if(xnum_temp < 10)
+    
+    strcpy(reg.apellidoM, apellido);
+    
+
+    if (sexo == 1)
     {
-        cadena[0] = '0';
-        cadena[1] = xnum_temp + '0';
-        cadena[2] = '\0';
-    }
-}
-
-int comp_esp(char cadena[])
-{
-    int tam;
-    int i;
-
-    tam = strlen(cadena);
-    if(cadena[0] == '\0')
-            return 0;
-    for(i = 1; i <= tam; i++)
-    {
-        if(cadena[i] == ' ' && cadena[i+1] == ' ')
-            return -1;
-    }
-}
-
-int solo_letras(char cadena[])
-{
-    int tam;
-    int i;
-
-    tam = strlen(cadena);
-    if (comp_esp(cadena) == 0)
-    {
-        return 0;
-    }
-    for(i =  0; i <= tam; i++)
-    {
-        if(cadena[i] < 'A' || cadena[i] > 'z')
-        {
-            return -1;
-        }
-        if(cadena[i] > 'Z' && cadena[i] < 'a')
-        {
-            return -1;
-        }
-
-        return 0;
-    }
-}
-
-void vali_cad(char cadena[], char *msg)
-{
-    int tam, band;
-
-    band = 1;
-    do{
-
-        printf("%s", msg);
-        fflush(stdin);
-        gets(cadena);
-
-        if (solo_letras(cadena) == 0)
-        {
-            if (comp_esp(cadena) == -1)
-            {
-                printf("No se permite doble espacio\n");
-                continue;
-            }
-        }
-        else
-        {
-            if(cadena[0] == ' ')
-            {
-                printf("No se permiten espacios\n");
-                continue;
-            }
-            else
-            {
-                printf("Solo puedes ingresar letras\n");
-                continue;
-            }
-        }
-
-        strupr(cadena);
-        band = 0;
-
-    }while(band == 1);      
-}
-
-int comp_esp_obg(char cadena[])
-{
-    int tam;
-    int i;
-
-    tam = strlen(cadena);
-    for(i = 1; i <= tam; i++)
-    {
-        if(cadena[i] == ' ' && cadena[i+1] == ' ')
-            return -1;
-    }
-}
-
-int solo_letras_obg(char cadena[])
-{
-    int tam;
-    int i;
-
-    tam = strlen(cadena);
-    for(i =  0; i <= tam; i++)
-    {
-        if(cadena[i] < 'A' || cadena[i] > 'z')
-        {
-            return -1;
-        }
-        if(cadena[i] > 'Z' && cadena[i] < 'a')
-        {
-            return -1;
-        }
-
-        return 0;
-    }
-}
-
-void vali_cad_obg(char cadena[], char *msg)
-{
-    int tam, band;
-
-    band = 1;
-    do{
-
-        printf("%s", msg);
-        fflush(stdin);
-        gets(cadena);
-
-        if (solo_letras_obg(cadena) == 0)
-        {
-            if (comp_esp_obg(cadena) == -1)
-            {
-                printf("No se permite doble espacio\n");
-                continue;
-            }
-        }
-        else
-        {
-            if(cadena[0] == ' ')
-            {
-                printf("No se permiten espacios\n");
-                continue;
-            }
-            else
-            {
-                printf("Solo puedes ingresar letras\n");
-                continue;
-            }
-        }
-
-        strupr(cadena);
-        band = 0;
-
-    }while(band == 1);      
-}
-
-void enie(char cadena[])
-{
-    int i, len;
-
-    len = strlen(cadena);
-
-    for(i=0; i<len; i++)
-    {
-        if (cadena[i] == -92 || cadena[i] == -91)
-		{
-			cadena[i] = 'X';
-		}
-    }
-}
-
-void enie_mayus(char cadena[])
-{
-    int i, len;
-
-    len = strlen(cadena);
-
-    for(i=0; i<len; i++)
-    {
-        if (cadena[i] == -92)
-		{
-			cadena[i] = -91;
-		}
-    }
-}
-
-int dela_del(char ap[])
-{
-    if(ap[0] == 'D' && ap[1] == 'E' && ap[2] == ' ' && ap[3] == 'L' && ap[4] == 'A' && ap[5] == ' ')
-    {
-        return 2;
+        int nomH = rand() % 10;
+        strcpy(reg.nombre, nombre);
     }
     else
     {
-        if(ap[0] == 'D' && ap[1] == 'E' && ap[2] == 'L' && ap[3] == ' ')
+        if(sexo == 2)
         {
-            return 1;
+            char nomM = rand() % 10;
+            strcpy(reg.nombre, nombre);
         }
     }
     
-    return 0;
-
-
+    return reg;
 }
 
+int agregarR(Tkey registros[], int tam)
+{   
+    system("CLS");
+    int i;
 
+    for(i = 0; i < 100; i++)
+    {
+        system("CLS");
+        registros[tam] = datosR(registros, tam);
+        system("CLS");
+        tam++;
+    }
+
+    printf("HAS GENERADO 100 REGISTROS\n");
+    system("PAUSE");
+
+    return tam;
+}
+Tkey datosM(Tkey registros[], int tam)
+{
+
+    Tkey reg;
+    long mat;
+    char apPat[21], apMat[21], nombre[41];
+
+    do{
+        reg.status = validaInt(0, 1,"0) INACTIVO 1) ACTIVO","FUERA DE RANGO");
+        mat = validaL(300000, 399999,"INGRESA TU MATRICULA: ","MATRICULA INVALIDA");
+
+        if(existeTkey(mat, registros, tam) == 1)
+        {
+            printf("ESTA MATRICULA YA EXISTE \n INGRESE UNA MATRICULA VALIDA\n");
+        }
+    
+    }while(existeTkey(mat, registros, tam) == 1);
+    
+    reg.matri = mat;
+
+    validaCad(apPat, "INGRESA TU APELLIDO PATERNO: \n");
+    strcpy(reg.apellidoP, apPat);
+
+    validaCad(apMat, "INGRESA TU APELLIDO MATERNO: \n");
+    strcpy(reg.apellidoM, apMat);
+
+    validaCad(nombre, "INGRESA TU NOMBRE: \n");
+    strcpy(reg.nombre, nombre);
+
+    reg.edad = validaInt(17, 80,"INGRESA LA EDAD: ","EDAD FUERA DE RANGO");
+    reg.genero = validaInt(1, 2,"INGRESE EL GENERO\n 1) HOMBRE\n 2) MUJER","OPCION FUERA DE RANGO"); 
+
+    return reg;
+}
+int agregarM(Tkey registros[], int tam)
+{   
+    int op = 1;
+    do{
+        system("CLS");
+        registros[tam] = datosM(registros, tam);
+        system("CLS");
+        tam++;
+        op = validaInt(0, 1,"1.- AGREGAR DATOS \n0.- SALIR \n SELECCIONE UNA OPCION: ","OPCION FUERA DE RANGO");
+    }while(op == 1);
+
+    return tam;
+}
+void imprimirR(Tkey registros[], int tam)
+{
+    Tkey reg;
+    int i;
+    char *sexo;
+    system("CLS");
+    
+    if (tam > 0)
+    {
+        printf("%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        
+        for (i = 0; i < tam; i++)
+        {
+            if(registros[i].genero == 1)
+            {
+                sexo ="HOMBRE";
+            }
+            else
+            {
+                sexo ="MUJER";
+            }
+
+            if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
+            {
+                printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[i].status, registros[i].matri, registros[i].nombre, registros[i].apellidoP, registros[i].apellidoM, registros[i].edad, sexo);
+            }
+        }
+    }
+    else
+    {
+        printf("INGRESE DATOS PARA PODER IMPRIMIR\n");
+    }
+
+    printf("\n");
+    system("PAUSE");
+}
+
+void buscarR(Tkey registros[], int tam)
+{
+    system("CLS");
+    long mat;
+    int pos, id, i;
+    char *sexo;
+
+    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES BUSCAR: ","MATRICULA INVALIDA");
+    pos = busqSec(registros, tam, id);
+
+    if (pos != -1)
+    {
+        system("CLS");
+
+        printf("%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        
+        if(registros[i].genero == 1)
+        {
+            sexo ="HOMBRE";
+        }
+        else
+        {
+            sexo ="MUJER";
+        }
+
+        if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
+        {
+            printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[i].status, registros[i].matri, registros[i].nombre, registros[i].apellidoP, registros[i].apellidoM, registros[i].edad, sexo);
+        }
+    }
+    else
+    {
+        printf("NO SE ENCONTRO LA MATRICULA\n");
+    }
+
+}
+void eliminarR(Tkey registros[], int tam)
+{
+    system("CLS");
+
+    long id;
+    int pos, op;
+
+    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES ELIMINAR: ","MATRICULA INVALIDA");
+    pos = busqSec(registros, tam, id);
+
+    if (pos != -1)
+    {
+        imprimirR(registros, tam);
+        op = validaInt(1, 2,"1) ELIMINAR\n 2) NO ELIMINAR\n","OPCION FUERA DE RANGO");
+
+        if (op == 1)
+        {
+            registros[pos].status = 0;
+        }    
+    }
+    else
+    {
+        printf("LA MATRICULA NO EXISTE\n");
+    }
+}
+void archivo(Tkey registros[],int tam)
+{
+     system("CLS");
+    Tkey reg;
+    int i;
+    char *sexo;
+    FILE *arch;
+    arch=fopen("archivo.txt","w");
+    if (tam > 0)
+    {
+        fprintf(arch,"%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        
+        for (i = 0; i < tam; i++)
+        {
+            if(registros[i].genero == 1)
+            {
+                sexo ="HOMBRE";
+            }
+            else
+            {
+                sexo ="MUJER";
+            }
+
+            if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
+            {
+                fprintf(arch,"%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[i].status, registros[i].matri, registros[i].nombre, registros[i].apellidoP, registros[i].apellidoM, registros[i].edad, sexo);
+            }
+        }
+        printf("Se han cargado los datos en el archivo");
+        fclose(arch);
+    }
+    else
+    {
+        printf("INGRESE DATOS PARA PODER IMPRIMIR\n");
+    }
+
+    printf("\n");
+    system("PAUSE");
+}
+int cargartxt(Tkey vect[],int *tam)
+{
+    int i;
+    Tkey reg;
+    char basura[30];
+    FILE *fa;
+    i=(*tam);
+    fa= fopen("datos.txt","r");
+    if (fa)
+    {
+        while (!feof(fa))
+        {
+            fscanf(fa,"%s%ld%s%s%s%d%s\n",basura,reg.matri,reg.nombre,reg.apellidoP,reg.apellidoM,reg.edad,reg.genero);
+            vect[i++]=reg;
+        }
+        printf("Se cargo correctamente el archivo");
+        fclose(fa);
+    }
+    (*tam)=i;
+    return 0;
+}
