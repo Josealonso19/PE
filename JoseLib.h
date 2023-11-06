@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
 typedef struct Tkey
 {
     long matri;
@@ -21,7 +20,6 @@ typedef struct Tkey
     int edad;
      
 }Tkey;
-
 int validaL(long ri, long rf,const char msg[],const char msgError[])
 {
     long num;
@@ -43,7 +41,6 @@ int validaL(long ri, long rf,const char msg[],const char msgError[])
 
     return num;
 }
-
 int validaInt(int ri, int rf,const char msg[],const char msgError[])
 {
     int num;
@@ -81,10 +78,8 @@ int busqSec(Tkey *registros, int tam, long matricula)
 void burbuja(Tkey vect[], int tam)
 {
     system("CLS");
-
     int i, j;
     Tkey burbuja;
-
     for(i = 0; i < tam - 1; i++)
     {
         for(j = i + 1; j < tam; j++)
@@ -100,7 +95,6 @@ void burbuja(Tkey vect[], int tam)
 
     system("PAUSE");
 }
-
 void quickSort(Tkey registros[], int limIzq, int limDer)
 {
     int izq, der, tem;
@@ -144,7 +138,6 @@ void quickSort(Tkey registros[], int limIzq, int limDer)
 }
 int ordenarR(Tkey registros[], int tam, int band)
 {
-
     system("cls");
     if(tam > 0)
     {
@@ -153,7 +146,6 @@ int ordenarR(Tkey registros[], int tam, int band)
             burbuja(registros, tam);
             band = 1;
         }
-
         else
         {
             quickSort(registros, 0, tam);
@@ -163,7 +155,6 @@ int ordenarR(Tkey registros[], int tam, int band)
         system("PAUSE");
         return band;
     }
-
     else
     {
         printf("PRIMERO DEBE HABER DATOS\n");
@@ -257,7 +248,6 @@ void validaCad(char cadena[], const char *msg)
 
     }while(band == 1);      
 }
-
 int existeTkey(long mat, Tkey *reg, int tam)
 {
     int i;
@@ -271,7 +261,6 @@ int existeTkey(long mat, Tkey *reg, int tam)
     }
     return 0;
 }
-
 Tkey datosR(Tkey registros[], int tam)
 {
     Tkey reg;
@@ -290,43 +279,43 @@ Tkey datosR(Tkey registros[], int tam)
 
     edad = (rand() % 60) + 17;
     status = rand() % 2;
-    sexo = (rand() % 2) + 1;
+    sexo = rand() % 2;
     
     reg.status = status;
     reg.matri = matri;
     reg.edad = edad;
     reg.genero = sexo;
-    
-    
-    
-    strcpy(reg.apellidoP, apellido);
-
-    
-    strcpy(reg.apellidoM, apellido);
-    
-
-    if (sexo == 1)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    char nombresM[][31] = {"Juan", "Luis", "Carlos", "Pedro"};
+    char nombresF[][31] = {"Maria", "Ana", "Laura", "Sofia"};
+    char apellidosP[][31] = {"Garcia", "Rodriguez", "Martínez", "Lopez", "Perez", "Fernandez", "Gonzalez", "Hernandez"};
+    char apellidosM[][31] = {"Sanchez", "Ramirez", "Torres", "Diaz", "Vargas", "Jimenez", "Ruiz", "Silva"};
+    int apellidoPIndex = rand() % 8;
+    int apellidoMIndex = rand() % 8;
+    if (sexo == 1) 
     {
-        int nomH = rand() % 10;
-        strcpy(reg.nombre, nombre);
-    }
-    else
+        // Genera un índice aleatorio para nombres masculinos
+        int nombreIndex = rand() % 4;
+        strcpy(reg.nombre, nombresM[nombreIndex]);
+    } 
+    else 
     {
-        if(sexo == 2)
-        {
-            char nomM = rand() % 10;
-            strcpy(reg.nombre, nombre);
-        }
+        // Genera un índice aleatorio para nombres femeninos
+        int nombreIndex = rand() % 4;
+        strcpy(reg.nombre, nombresF[nombreIndex]);
     }
+
+    /*strcpy(reg.nombre, nombres[nombreIndex]);*/
+    strcpy(reg.apellidoP, apellidosP[apellidoPIndex]);
+    strcpy(reg.apellidoM, apellidosM[apellidoMIndex]);
     
     return reg;
 }
-
 int agregarR(Tkey registros[], int tam)
 {   
     system("CLS");
     int i;
-
+    int band = 0;
     for(i = 0; i < 100; i++)
     {
         system("CLS");
@@ -334,7 +323,6 @@ int agregarR(Tkey registros[], int tam)
         system("CLS");
         tam++;
     }
-
     printf("HAS GENERADO 100 REGISTROS\n");
     system("PAUSE");
 
@@ -346,16 +334,13 @@ Tkey datosM(Tkey registros[], int tam)
     Tkey reg;
     long mat;
     char apPat[21], apMat[21], nombre[41];
-
     do{
         reg.status = validaInt(0, 1,"0) INACTIVO 1) ACTIVO","FUERA DE RANGO");
         mat = validaL(300000, 399999,"INGRESA TU MATRICULA: ","MATRICULA INVALIDA");
-
         if(existeTkey(mat, registros, tam) == 1)
         {
             printf("ESTA MATRICULA YA EXISTE \n INGRESE UNA MATRICULA VALIDA\n");
         }
-    
     }while(existeTkey(mat, registros, tam) == 1);
     
     reg.matri = mat;
@@ -423,24 +408,22 @@ void imprimirR(Tkey registros[], int tam)
     printf("\n");
     system("PAUSE");
 }
-
 void buscarR(Tkey registros[], int tam)
 {
     system("CLS");
     long mat;
     int pos, id, i;
     char *sexo;
+    int band = 0;
 
-    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES BUSCAR: ","MATRICULA INVALIDA");
+    id = validaL(300000, 399999,"INGRESA LA MATRICULA QUE QUIERES ELIMINAR: ","MATRICULA INVALIDA");
     pos = busqSec(registros, tam, id);
 
     if (pos != -1)
     {
         system("CLS");
-
-        printf("%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
-        
-        if(registros[i].genero == 1)
+        printf("\nRESULTADOS ENCONTRADO.\n%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
+        if(registros[pos].genero == 1)
         {
             sexo ="HOMBRE";
         }
@@ -449,9 +432,9 @@ void buscarR(Tkey registros[], int tam)
             sexo ="MUJER";
         }
 
-        if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
+        if (registros[pos].matri != -1 && registros[pos].matri >= 300000 && registros[pos].matri <= 399999)
         {
-            printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[i].status, registros[i].matri, registros[i].nombre, registros[i].apellidoP, registros[i].apellidoM, registros[i].edad, sexo);
+            printf("%-10d %-14ld %-15s %-20s %-20s %-10d %-10s\n", registros[pos].status, registros[pos].matri, registros[pos].nombre, registros[pos].apellidoP, registros[pos].apellidoM, registros[pos].edad, sexo);
         }
     }
     else
@@ -487,7 +470,7 @@ void eliminarR(Tkey registros[], int tam)
 }
 void archivo(Tkey registros[],int tam)
 {
-     system("CLS");
+    system("CLS");
     Tkey reg;
     int i;
     char *sexo;
