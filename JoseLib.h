@@ -3,7 +3,7 @@
 // En esta libreria usaremos las funciones de la practica 10 para poder implementarlas en el archivo .cpp y de esta manera poder lograr el resultado
 // esperado.
 
-//JoseLib.h
+//JoseLib.h de la practica 11.
 
 #include <stdio.h>
 #include <stdlib.h>
