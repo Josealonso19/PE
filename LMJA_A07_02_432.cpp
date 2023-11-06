@@ -113,13 +113,17 @@ void mayusculas(char cadena[60])
 {
     int i;
     printf("\n");
-    for(i = 0; cadena[i] != '\0'; i++)
+    for(i = 0; cadena[i] != '\0'; i++) //Seguira el ciclo mientras la cadena no sea un caracter nulo
     {
+        //Estas dos condicionales son para verificar si en un rango de a hasta z minusculas algunas de las letras lo son para 
+        //poder convertirlas a mayusculas.
         if (cadena[i] >= 97)
         {
             if (cadena[i] <= 122)
             {
                 cadena[i] = cadena[i] - 32;
+            //Aqui reste 32 al valor ASCII del carácter cadena[i]. Esto convierte la letra minúscula en su equivalente en mayúscula en la
+            //tabla ASCII.    
                 printf("%c" ,cadena[i]);
             }
         }
@@ -132,10 +136,14 @@ void minusculas(char cadena[60])
     printf("\n");
     for(i = 0; cadena[i] != '\0'; i++)
     {
+//Estas dos condicionales son para verificar si en un rango de A hasta Z mayusculas algunas de las letras lo son para 
+        //poder convertirlas a minusculas.
         if (cadena[i] >= 65)
         {
             if (cadena[i] <= 90)
             {
+        //Sume 32 al valor ASCII del carácter cadena[i]. Esto convierte la letra mayúscula en su equivalente en minúscula
+        //en la tabla ASCII.
                 cadena[i] = cadena[i] + 32;
                 printf("%c" ,cadena[i]);
             }
@@ -147,6 +155,8 @@ void capital(char cadena[60])
 {
     int i;
     printf("\n");
+//Asigna los valores ASCII de los caracteres 'C', 'A', 'P', 'I', 'T', 'A', 'L' respectivamente a las primeras siete posiciones 
+//del arreglo cadena.
     cadena[0] = 67;
     cadena[1] = 65;
     cadena[2] = 80;
@@ -154,7 +164,11 @@ void capital(char cadena[60])
     cadena[4] = 84;
     cadena[5] = 65;
     cadena[6] = 76;
+//Asigna el carácter nulo '\0' en la posición 7 de cadena para marcar el final de la cadena. 
     cadena[7] = '\0';
+
+//Verifica que el caracter de la cadena no sea nulo para asi poder imprimir "CAPITAL" de esta manera perdiendo lo que antes se 
+//escribiera en la cadena.
     for(i = 0; cadena[i] != '\0'; i++)
     {
         printf("%c", cadena[i]);
@@ -165,15 +179,17 @@ int tamaño(char cadena[60])
 {
     printf("\n");
     int i;
-    for(i = 0; cadena[i] != '\0'; i++);
-    return i;
+    for(i = 0; cadena[i] != '\0'; i++); //Aqui solo calculamos el tamaño de la cadena de valores enteros, pero solo los caculamos
+    return i;                          //para retornarlos con la varaible de inicializacion i;
 }
 
 void voltear(char cadena[60])
 {
     int i, t;
     printf("\n");
-    t = tamaño(cadena);
+    t = tamaño(cadena); //Calculo el tamaño de la cadena.
+
+    //Recorre la cadena desde la última posición (t-1, donde t es la longitud de la cadena) hasta la primera posición (índice 0).
     for (i = t-1; i >= 0; i--)
     {
         printf("%c", cadena[i]);
@@ -183,26 +199,37 @@ void voltear(char cadena[60])
 void noespacios(char cadena[60])
 {
     int i, t, aux, espacio;
+    
     printf("\n");
+    
     t = tamaño(cadena);
+
+// Recorre la cadena desde el principio hasta el final (desde i = 0 hasta i < t). Dentro de este bucle, se busca cualquier espacio en 
+// blanco (32 en la tabla ASCII) en la cadena.
     for(i = 0; i < t; i++)
     {
-        if (cadena[i] == 32)
+        if (cadena[i] == 32) //Verifica que exista un espacio en blanco.
         {
-            espacio = i;
-            aux = i;
-            while (cadena[aux] == 32 && aux < t - 1)
+            espacio = i; //Esto almacena la posición del primer espacio en blanco encontrado en la variable espacio.
+            
+            aux = i; //aux se utilizará para encontrar el siguiente carácter que no sea un espacio en blanco.
+            
+            while (cadena[aux] == 32 && aux < t - 1) //verifica que el carácter en la posición aux sea un espacio en blanco y que aux 
+                                                     //no haya alcanzado el final de la cadena (t - 1).
             aux ++;
             cadena[espacio] = cadena[aux];
             cadena[aux] = 32;
         }
     }
-    
+
+//Entra en otro bucle for para recorrer la cadena y luego imprimir los caracteres en la salida estándar. Esta vez, el bucle verifica 
+//si el carácter actual no es el carácter nulo '\0' para determinar cuándo detenerse.
     for(i = 0; cadena[i] != '\0'; i++)
     {
         printf("%c", cadena[i]);
     }
 }
+
 
 char permitir(char cadena[60])
 {
