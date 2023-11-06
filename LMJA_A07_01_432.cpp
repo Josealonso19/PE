@@ -15,6 +15,9 @@
 //  ./actividad7/LMJA_A07_01_432
 
 // Prototipos de funciones
+//conjunto de funciones para realizar diferentes manipulaciones en la cadena ingresada por el usuario y 
+//mostrarlas de diversas maneras. Cada función tiene un propósito específico y utiliza argumentos como la cadena original y 
+//un mensaje para mostrar el resultado. 
 int tam_cadena(char cadena[]);
 void salida_numero1(char cadena[], char mensaje[]);
 void salida_numero2(char cadena[], char mensaje[]);
@@ -32,9 +35,13 @@ int main()
     char cadena[40];
 
     printf("Ingrese una cadena: ");
-    fflush(stdout);  // Limpiar el buffer antes de usar fgets
+    fflush(stdout);  // se utiliza para limpiar el búfer de salida estándar antes de utilizar fgets. Esto asegura que cualquier 
+    //salida previa se haya mostrado antes de que se solicite la entrada del usuario.
+    
     fgets(cadena,40 , stdin);
-
+    
+//Se declaran 10 variables char llamadas mensaje1, mensaje2, ..., mensaje10, que contienen mensajes de encabezado para cada una de 
+//las 10 salidas que se van a generar. Estos mensajes se utilizarán como argumentos en las llamadas a las funciones de salida.
     char mensaje1[] = "Salida 1: \n";
     char mensaje2[] = "Salida 2: \n";
     char mensaje3[] = "Salida 3: \n";
@@ -46,6 +53,8 @@ int main()
     char mensaje9[] = "Salida 9: \n";
     char mensaje10[] = "Salida 10: \n";
 
+//Estas funciones se encargan de realizar las diferentes manipulaciones de la cadena y mostrar los resultados en función de los 
+//mensajes proporcionados.
     salida_numero1(cadena, mensaje1);
     salida_numero2(cadena, mensaje2);
     salida_numero3(cadena, mensaje3);
@@ -63,9 +72,10 @@ int main()
 int tam_cadena(char cadena[]) //Aqui se calcula la longitud o tamaño de la cadena.
 {
     int i;
-    for(i = 0; cadena[i] != '\0'; i++);
+    for(i = 0; cadena[i] != '\0'; i++); //Se pone ; para asi solo retornar el tamaño de la cadena con la varaible i.
     return i;
 }
+
 //Aqui se imprime lo escrito en la cadena de manera Normal:
 void salida_numero1(char cadena[], char mensaje[]) //Aqui ponemos tal cual el valor agregado en la cadena
 {
@@ -125,6 +135,8 @@ void salida_numero5(char cadena[], char mensaje[])
     printf("\n %s \n", mensaje);
     for(i = t; i >= 0; i--)
     {
+// iniciaste otro bucle for con la variable de control j inicializada a 0. Este bucle se ejecuta mientras j sea menor o igual a i, 
+//lo que significa que imprimirás los primeros i+1 caracteres de la cadena.
         for(j = 0; j <= i; j++)
         {
             printf("%c", cadena[j]);
