@@ -12,6 +12,9 @@
 #include <time.h>
 #include <stdbool.h>
 #define M 10
+bool vect1_filled = false;
+bool vect2_filled = false;
+bool vect3_filled = false; //Mando a llamar a estas tres variables booleanas para asi poder rastrear si se ha llamado antes.
 //-------------------------------------------------------------------
 //   ./semana8/LMJ_A08_01_432
 
@@ -64,19 +67,51 @@ void menu()
                 break;
 
             case 3:
-                LlenarVector3_ConVector1_Y_VECTOR2(vect1, vect2, vect3);
+                if (vect1_filled && vect2_filled) 
+		{
+                    LlenarVector3_ConVector1_Y_VECTOR2(vect1, vect2, vect3);
+                }
+		else 
+		{
+               	    printf("Primero debes llenar Vector 1 y Vector 2.\n");
+            	}
+                system("PAUSE");
                 break;
 
             case 4:
-                Imprimir_Vectores(vect1, vect2, vect3);
+                if (vect1_filled && vect2_filled) 
+                {
+                    Imprimir_Vectores(vect1, vect2, vect3);
+                }
+                else{
+                    printf("Primero debes llenar Vector 1 y Vector 2.\n");     
+                }
+                system("PAUSE");
                 break;
 
             case 5:
-                LlenaMatriz_4X4 (vect1,vect2,vect3,m);
+                if (vect1_filled && vect2_filled && vect3_filled) 
+                {
+                    LlenaMatriz_4X4 (vect1,vect2,vect3,m);
+                }
+                else
+		{
+                    printf("Primero debes llenar los vectores 1,2 y 3.\n");     
+                }
+                system("PAUSE");
                 break;    
 
             case 6:
-                Imprimir_Matriz (m);
+                if (vect1_filled && vect2_filled && vect3_filled) 
+                {
+                    Imprimir_Matriz (m);
+                }
+                else
+		{
+                    printf("Lo siento usuario pero primero debes de llenar los vectores 1,2 y 3\n");
+                    printf(",ademas de llenar la matriz con ellos.\n");     
+                }
+                system("PAUSE");
                 break;             
 
             case 0:
@@ -97,7 +132,7 @@ void LlenarVector1_Manualmente(int vect1[], int m)
 {
     system("CLS");
     int i,numero;
-    printf("Escogiste llenar vector manualmente\nDame 10 numeros entre el 10 y 70\n");
+    printf("Escogiste llenar vector manualmente\nDame 10 numeros entre el 30 y 70\n");
     for (i = 0; i < m; i++) {
         scanf("%d",&numero);
         if(numero >=10 && numero <=70)
@@ -109,6 +144,7 @@ void LlenarVector1_Manualmente(int vect1[], int m)
             printf("Tu numero no esta en el rango\n");
         }
     }
+    vect1_filled = true;
     system("PAUSE");
 }
 //--------------------------------------------------------------------------------------------------------
@@ -142,8 +178,9 @@ printf("Escogiste llenar vector aleatoriamente\n");
             numero=1+rand()%20; 
         } while (Sin_repetir(vect2,numero));
         vect2[i]=numero;  
-    }
-        system("PAUSE");            
+    }      
+        vect2_filled = true;
+        system("PAUSE");     
     }
     
 //--------------------------------------------------------------------------------------------------------
@@ -155,18 +192,19 @@ int i,x,numero;
 x=20;
 system("CLS");
 printf("Escogiste llenar vector uno y dos\n");
-for(i=0;i<10;i++)
-{
-vect3[i]=vect1[i];
 
-}
+    for(i=0;i<10;i++)
+    {
+        vect3[i]=vect1[i];
+    }
 
-for(i=0;i<10;i++)
-{
-vect3[i+10]=vect2[i]; 
-}
+    for(i=0;i<10;i++)
+    {
+        vect3[i+10]=vect2[i]; 
+    }
 
-system("PAUSE");
+    vect3_filled = true;
+    system("PAUSE");
 }
 //--------------------------------------------------------------------------------------------------------
 
@@ -176,7 +214,7 @@ void Imprimir_Vectores (int vect1[],int vect2[],int vect3[])
     int v,i,m,x;
     do{
     system("CLS");
-    printf("Que vector deseas usuario\n Vector 1,Vector 2,Vector 3\n");
+    printf("Que vector deseas usuario\n Vector 1,Vector 2,Vector 3, o 0 para Salir\n");
     scanf("%d",&v);
 
     switch (v)
@@ -187,6 +225,8 @@ void Imprimir_Vectores (int vect1[],int vect2[],int vect3[])
     for(i=0;i<m;i++)
     {
         printf("%2d:[%3d]\n",i+1,vect1[i]);  //i+1 es para que no se vea el cero 
+	//%2d se utiliza para imprimir el índice con un ancho de 2 caracteres
+	//y %3d se utiliza para imprimir el valor del elemento con un ancho de 3 caracteres.
     }
         break;
     case 2:
@@ -221,49 +261,57 @@ void Imprimir_Vectores (int vect1[],int vect2[],int vect3[])
 //--------------------------------------------------------------------------------------------------------
 void LlenaMatriz_4X4 (int vect1[],int vect2[],int vect3[],int m[][4])
 {
-int i,j,k;
-system("CLS");
-k=0;
-printf("Escogiste matriz de cuatro por cuatro\n");
-for(i=0;i<2;i++)
-{
-    for(j=0;j<4;j++)
-    {
-        m[i][j]=vect1[k];
-        k++;
-    }
-}
-k=0;
-for(i=2;i<4;i++)
-{
-    for(j=0;j<4;j++)
-    {
-        m[i][j]=vect2[k];
-        k++;
-    }
-    printf("\n");
-}
+    int i,j,k;
+    system("CLS");
+    k=0;
 
-system("PAUSE");
+    printf("Escogiste matriz de cuatro por cuatro\n");
+
+    for(i=0;i<2;i++) //Esto significa que llenará las dos primeras filas de la matriz.
+    {
+        for(j=0;j<4;j++) //Esto recorre las cuatro columnas de la matriz.
+        {
+            m[i][j]=vect1[k];
+            k++;
+        }
+    }
+
+    k=0;
+
+    for(i=2;i<4;i++) //Esto significa que llenará las dos últimas filas de la matriz.
+    {
+        for(j=0;j<4;j++) //Esto recorre las cuatro columnas de la matriz.
+        {
+            m[i][j]=vect2[k];
+            k++;
+        }
+
+        printf("\n");
+    }
+
+    system("PAUSE");
 }
 //--------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------
 void Imprimir_Matriz (int m[][4])
 {
-int i,j;
-system("CLS");
-printf("Escogiste imprimir matriz\n");
+    int i,j;
+    system("CLS");
+    printf("Escogiste imprimir matriz\n");
 
-for(i=0;i<4;i++)
-{
-    printf("%2d: ",i);
-    for(j=0;j<4;j++)
+    for(i=0;i<4;i++) //Esto recorre las filas de la matriz.
     {
-        printf("[%3d]",m[i][j]);
+        printf("%2d: ",i); //Para imprimir el número de fila actual con un ancho de 2 caracteres. 
+
+        for(j=0;j<4;j++) //Esto recorre las columnas de la matriz.
+        {
+            printf("[%3d]",m[i][j]); //imprimir el valor de la celda correspondiente de la matriz con un ancho de 3 caracteres. 
+		                     //esto ayuda a alinear los valores en la matriz.
+        }
+
+        printf("\n");
     }
-    printf("\n");
-}
 
 system("PAUSE");
 }
