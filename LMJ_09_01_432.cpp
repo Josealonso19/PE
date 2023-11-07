@@ -13,8 +13,12 @@
 
 int main()
 {
+    int vectorLlenado = 0; // Variable para rastrear si el vector se ha llenado
+    int matrizLlenada = 0; // Variable para rastrear si la matriz se ha llenado
+
     int decision, vect[M], m, matriz[4][4]; // Declaramos las variables,el vector y la matriz
     char cadena[30]; //Tambien declaramos una cadena de tipo caracter.
+
     do{
         printf("\n          MENU\n           ");
 
@@ -34,31 +38,71 @@ int main()
             case 1:
                 printf("\nHas escogido la opcion 1");
                 llenar_vect_aleatorio(vect, M, 100, 200);
+                vectorLlenado = 1; // Marcar el vector como llenado
+                system("PAUSE");
                 break;
 
             case 2:
                 printf("\nHas escogido la opcion 2");
-                llenar_matriz(matriz, M+1, 0, 16);
+                llenar_matriz(matriz, M+1, 0, 16); //Para llenar la matriz matriz con números aleatorios dentro del rango [0, 16].
+                matrizLlenada = 1; // Marcar la matriz como llenada
+                system("PAUSE");
                 break;
             
             case 3:
                 printf("\nHas escogido la opcion 3");
-                imprimir_vect(vect, M);
+
+                if (vectorLlenado) 
+                {
+                    imprimir_vect(vect, M);
+                } 
+                else 
+                {
+                    printf("El vector no ha sido llenado. Por favor, elige la opción 1 primero.\n");
+                }
+                system("PAUSE");
                 break;
             
             case 4:
                 printf("\nHas escogido la opcion 4");
-                imprimir_mat(matriz, M-11, N);
+
+                if (matrizLlenada) 
+                {
+                    imprimir_mat(matriz, M - 11, N);
+                } 
+                else 
+                {
+                    printf("La matriz no ha sido llenada. Por favor, elige la opción 2 primero.\n");
+                }
+                system("PAUSE");
                 break;
 
             case 5:
                 printf("\nHas escogido la opcion 5");
-                ordenar(vect, M);
+
+                if (vectorLlenado) 
+                {
+                    ordenar(vect, M);
+                } 
+                else 
+                {
+                    printf("El vector no ha sido llenado. Por favor, elige la opción 1 primero.\n");
+                }
+                system("PAUSE");
                 break;
 
             case 6:
                 printf("\nHas escogido la opcion 6");
-                buscar (vect, M);
+
+                if (vectorLlenado) 
+                {
+                    buscar(vect, M);
+                } 
+                else 
+                {
+                    printf("El vector no ha sido llenado. Por favor, elige la opción 1 primero.\n");
+                }
+                system("PAUSE");
                 break;
 
             case 0:
