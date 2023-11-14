@@ -1,10 +1,3 @@
-// Lopez Michel Jose Alonso Matricula: 370650
-// Fecha inicio: 23/10/2023 Fecha fin: 02/11/2023
-// En esta libreria usaremos las funciones de la practica 10 para poder implementarlas en el archivo .cpp y de esta manera poder lograr el resultado
-// esperado.
-
-//JoseLib.h de la practica 11.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -271,10 +264,10 @@ Tkey datosR(Tkey registros[], int tam)
     int sexo;
     int edad;
 
-    matri = (rand() % 99999) + 300000;
+    matri = (rand() % 999999) + 300000;
     while(existeTkey(matri, registros, tam) == 1)
     {
-        matri = (rand() % 99999) + 300000;
+        matri = (rand() % 999999) + 300000;
     }
 
     edad = (rand() % 60) + 17;
@@ -316,14 +309,17 @@ int agregarR(Tkey registros[], int tam)
     system("CLS");
     int i;
     int band = 0;
-    for(i = 0; i < 100; i++)
-    {
-        system("CLS");
-        registros[tam] = datosR(registros, tam);
-        system("CLS");
-        tam++;
+    if (tam <= MAX)
+    {   
+        for(i = 0; i < 100; i++)
+        {
+            system("CLS");
+            registros[tam] = datosR(registros, tam);
+            system("CLS");
+            tam++;
+        }
+        printf("HAS GENERADO 100 REGISTROS\n");
     }
-    printf("HAS GENERADO 100 REGISTROS\n");
     system("PAUSE");
 
     return tam;
@@ -387,11 +383,11 @@ void imprimirR(Tkey registros[], int tam)
         {
             if(registros[i].genero == 1)
             {
-                sexo ="HOMBRE";
+                strcpy(sexo,"HOMBRE");;
             }
             else
             {
-                sexo ="MUJER";
+                strcpy(sexo,"MUJER");
             }
 
             if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
@@ -425,11 +421,11 @@ void buscarR(Tkey registros[], int tam)
         printf("\nRESULTADOS ENCONTRADO.\n%-10s %-14s %-15s %-20s %-20s %-10s %-10s\n", "ESTATUS", "MATRICULA", "NOMBRE", "APELLIDO PATERNO", "APELLIDO MATERNO", "EDAD", "GENERO\n");
         if(registros[pos].genero == 1)
         {
-            sexo ="HOMBRE";
+            strcpy(sexo,"HOMBRE");
         }
         else
         {
-            sexo ="MUJER";
+            strcpy(sexo,"MUJER");
         }
 
         if (registros[pos].matri != -1 && registros[pos].matri >= 300000 && registros[pos].matri <= 399999)
@@ -484,11 +480,11 @@ void archivo(Tkey registros[],int tam)
         {
             if(registros[i].genero == 1)
             {
-                sexo ="HOMBRE";
+                strcpy(sexo,"HOMBRE");
             }
             else
             {
-                sexo ="MUJER";
+                strcpy(sexo,"MUJER");
             }
 
             if (registros[i].matri != -1 && registros[i].matri >= 300000 && registros[i].matri <= 399999)
@@ -507,24 +503,83 @@ void archivo(Tkey registros[],int tam)
     printf("\n");
     system("PAUSE");
 }
-int cargartxt(Tkey vect[],int *tam)
+int cargartxt(Tkey vect[],int i)
+{
+    FILE *fa;
+    Tkey reg;
+    
+    char lalinea[350];
+    int matricula = 0, edads = 0, sexor = 0;
+    char elnombre[25], apa[25], ama[25];
+    int x;
+    char arch[50];
+    char *dato;
+
+    printf("Que archivo deseas cargar?\n");
+    gets(arch);
+
+    strcat(arch, ".txt");
+    fa = fopen(arch, "r");
+    
+    if (fa != NULL)
+    {
+        while (fgets(lalinea, sizeof(lalinea), fa)!= NULL)
+        {
+
+            dato = strtok(lalinea, " ");
+            printf("\n%s ", dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            matricula = atoi(dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            strcpy(elnombre, dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            strcpy(apa, dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            strcpy(ama, dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            edads = atoi(dato);
+            dato = strtok(NULL, " ");
+
+            printf("%s ", dato);
+            sexor = atoi(dato);
+            dato = strtok(NULL, " ");
+            //fscanf(fa, "%d %d %s %s %s %d %s", &lalinea);
+            //fscanf(fa, "%d %d %*s %*s %*s %d %*s", &x, &matricula, elnombre, apa, ama, &edads, sexor);
+            vect[i].matri = matricula;
+            strcpy(vect[i].nombre, elnombre);
+            strcpy(vect[i].apellidoP, apa);
+            strcpy(vect[i].apellidoM, ama);
+            vect[i].edad = edads;
+            vect[i].genero = sexor;
+            //printf("%d %d %*s %*s %*s %d %*s", &x, &vect->matri, &vect->nombre, &vect->apellidoP, &vect->apellidoM, &vect->edad, &vect->genero);
+            i++;
+            
+        }
+        printf("\nSe ha cargado el archivo corectamente.\n");
+    }
+    else
+    {
+        printf("No existe el archivo %s", arch);
+    }
+    
+    fclose(fa);
+    return i;
+}
+void vaciar(char vect[])
 {
     int i;
-    Tkey reg;
-    char basura[30];
-    FILE *fa;
-    i=(*tam);
-    fa= fopen("datos.txt","r");
-    if (fa)
+    for (i = 0; i < MAX ; i++)
     {
-        while (!feof(fa))
-        {
-            fscanf(fa,"%s%ld%s%s%s%d%s\n",basura,reg.matri,reg.nombre,reg.apellidoP,reg.apellidoM,reg.edad,reg.genero);
-            vect[i++]=reg;
-        }
-        printf("Se cargo correctamente el archivo");
-        fclose(fa);
+        vect[i] = '\0';
     }
-    (*tam)=i;
-    return 0;
 }
