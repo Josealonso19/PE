@@ -1,3 +1,10 @@
+// Lopez Michel Jose Alonso   Matricula: 370650
+// Fecha inicio: 01/11/2023   Fecha fin: 11/11/2023
+
+// En esta libreria decidi practicamente hacer todas las funciones de todo el programa para asi poder
+// usarlas en el archivo .cpp.
+// LMJA_A12_01_432
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
