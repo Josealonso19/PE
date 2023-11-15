@@ -1,3 +1,10 @@
+// Lopez Michel Jose Alonso   Matricula: 370650
+// Fecha inicio: 01/11/2023   Fecha fin: 11/11/2023
+
+// En este programa usaremos las funciones de la libreria JoseLib.h para asi poder hacer uso de ellas por medio de 
+// este programa mandandolas a llamar.
+// LMJA_A12_01_432
+
 #define P 150
 #define MAX 500
 #include "JoseLib.h"
