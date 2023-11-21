@@ -1,3 +1,9 @@
+// Lopez Michel Jose Alonso   Matricula: 370650
+// Fecha inicio: 13/11/2023   Fecha fin: 21/11/2023
+
+// Usaremos la libreria para la pracitca 13 junto con los dos archivos .cpp.
+// JoseLib.h
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
