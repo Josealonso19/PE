@@ -1,0 +1,1 @@
+printf("%-10s %-10s %-20s %-20s %-20s %-5s %-10s\n", "Estatus", "Matricula", "Apellido paterno", "Apellido materno", "Nombre", "Edad", "Genero");
