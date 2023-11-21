@@ -1,3 +1,9 @@
+// Lopez Michel Jose Alonso   Matricula: 370650
+// Fecha inicio: 13/11/2023   Fecha fin: 21/1/2023
+
+// Es el archivo .cpp que usaremos para complementarlo con el archivo .h que es la Joselib.h.
+// LMJA_A13_01_432
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
